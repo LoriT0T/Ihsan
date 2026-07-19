@@ -152,6 +152,21 @@ table.wk td:first-child{color:var(--parch)}
 @media(prefers-reduced-motion:reduce){.page{animation:none}}
 .spacer{height:36px}
 .savenote{font-family:var(--sans);font-size:12px;color:var(--green);margin-top:8px;min-height:16px}
+details.sec{border:1px solid var(--line);border-radius:12px;background:var(--ink2);margin:12px 0;overflow:hidden}
+details.sec summary{cursor:pointer;padding:14px 16px;font-family:var(--sans);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass2);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.sec summary::-webkit-details-marker{display:none}
+details.sec summary::after{content:'+';color:var(--faint);font-size:15px}
+details.sec[open] summary::after{content:'−'}
+details.sec .bd{padding:2px 16px 16px}
+details.sec .bd p{margin:9px 0;font-size:15.5px}
+details.sec .bd ul{margin:8px 0 8px 18px}
+details.sec .bd li{margin:6px 0;font-size:15px}
+details.sec .bd h3{margin:14px 0 4px;color:var(--parch);font-size:15px}
+table.bl{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+table.bl td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.bl td:first-child{color:var(--parch);width:52%}
+table.bl td:last-child{color:var(--dim)}
+.script{font-size:14.5px;color:var(--brass2);font-style:italic}
 </style>
 </head>
 <body>
@@ -235,7 +250,7 @@ table.wk td:first-child{color:var(--parch)}
   <p class="dimtx small" style="margin:8px 0 18px">Reference, not daily reading. Open what the day needs.</p>
   <div class="list">
     <button class="rowlink" data-go="m1"><span class="n">١</span><span style="flex:1"><span>Allah</span><div class="sub">Prayer, dhikr, the 30-minute rule, boundaries</div></span><span class="arw">›</span></button>
-    <button class="rowlink" data-go="m2"><span class="n">٢</span><span style="flex:1"><span>People</span><div class="sub">The four bodies, warm-up, the blend, the Alone body</div></span><span class="arw">›</span></button>
+    <button class="rowlink" data-go="m2"><span class="n">٢</span><span style="flex:1"><span>People — The Social Codex</span><div class="sub">Engine · bodies · baseline · reading people · laws · tactics · playbooks</div></span><span class="arw">›</span></button>
     <button class="rowlink" data-go="m3"><span class="n">٣</span><span style="flex:1"><span>Health</span><div class="sub">Lean bulk to 80kg, training, sleep, supplements</div></span><span class="arw">›</span></button>
     <button class="rowlink" data-go="m4"><span class="n">٤</span><span style="flex:1"><span>Looks</span><div class="sub">AM/PM routines, weekly slot, occasion prep</div></span><span class="arw">›</span></button>
     <button class="rowlink" data-go="m5"><span class="n">٥</span><span style="flex:1"><span>Career</span><div class="sub">Deep blocks, weekly output, ventures</div></span><span class="arw">›</span></button>
@@ -264,34 +279,260 @@ table.wk td:first-child{color:var(--parch)}
 
 <section class="page manual" id="page-m2">
   <button class="btn ghost" data-go="manuals">‹ Manuals</button>
-  <div class="eyebrow">Manual ٢</div><h1>People</h1>
-  <p class="note">The old Social note stays the master tactics reference (reading people, laws, workflows). This manual sits above it: who you become, how you warm up, which body in which room. The Golden Rule is the entire game: get them talking, listen, empathize, respond positively, make them feel good.</p>
-  <h2>The roster</h2>
-  <p>Four bodies plus alternates, each fully specified in the <b>Shifts</b> tab: footage, physicality, line, deployment. Ferguson the Player · Brand the Flow · the Uncle the Anchor · Wayne the Presence, with Khalo Ibrahim and Abo Abdullah as real-footage alternates that often beat celebrity clips because the memory is yours.</p>
-  <h2>With women: the blend</h2>
-  <p>Brand's warmth and verbal ease, at Ferguson's playfulness, governed by Wayne's restraint, carried in the Hit Man's frame. Charming, funny, fully unattached to outcome. The operating rule is subtraction: fewer compliments than you want to give, fewer messages than you want to send, more silence than feels comfortable. Harmless charm is mostly restraint wearing a smile.</p>
-  <h2>Warm-up · before any planned event · 10 min</h2>
-  <ul>
-    <li><b>Mouth and voice (3m):</b> tongue twisters aloud, one paragraph read with exaggerated articulation, one minute of free speech. Clear the fog before the room does it for you.</li>
-    <li><b>Pick the primary shift (1m):</b> party = Ferguson. Networking = Wayne. Strangers or a date = Brand. Depth = Uncle.</li>
-    <li><b>Run the full shift protocol (2m):</b> use the Run Shift button on the character's card. Stay in the body while getting ready. Walk to the mirror in it.</li>
-    <li><b>Rehearsal (2m):</b> in the body, first person: door, greeting, first exchange. Then one awkward moment, and you staying loose inside it, Ferguson-style. The awkward rep matters more than the smooth one.</li>
-    <li><b>Baseline skim (1m):</b> listen actively · question · empathize · compliment · common ground · playfulness.</li>
-    <li><b>Sharpness token (30s):</b> the one physical trigger, always the same, meaning fully present.</li>
-  </ul>
-  <h2>Deployment rules</h2>
-  <ul>
-    <li>Go first, go positive. You set the temperature of every room you enter.</li>
-    <li>Warm goodbye, every time, even tired. The February regret is the permanent anchor for this rule.</li>
-    <li>One favor asked or given per new connection, when natural.</li>
-    <li>Mid-conversation slip: five-second reset, posture and line only, while they are talking. Nobody sees it.</li>
-    <li><b>Shifts are worn for people, never against them.</b> Charm in service of making people feel good is the whole license.</li>
-  </ul>
-  <h2>The third character: Alone</h2>
-  <p>The old note split the self into Social, Business, Alone, and never defined the one that decides whether the other two are real. The Alone body: the door closes and nothing drops. Same posture, same standards, no audience needed. <i>"Who I am when unseen is who I actually am."</i> If the Alone body holds, the other two stop being performances and become descriptions.</p>
-  <h2>Daily articulation rep</h2>
-  <p>One short video per day, camera on, 60 to 90 seconds on anything, inside the Brand body. Posted or deleted, irrelevant: the rep trains articulation, lens eye contact, and comfort being perceived. From your TikTok note, kept for the right reason: charisma practice, not follower chasing.</p>
-  <h2>Review</h2><p>After any significant interaction, 60 seconds: which shift was I in, did it hold, what would I redo. Patterns only. Same mistake three times becomes the fortnight's focus.</p>
+  <div class="eyebrow">Manual ٢</div><h1>The Social Codex</h1>
+  <p class="note">The complete social system in one place. The Golden Rule governs everything below: encourage the other person to speak, listen to what they say, show empathy, respond positively. Make them feel good, seen, heard, appreciated, and they like you back. Every section serves this one rule.</p>
+
+  <details class="sec" open><summary>The engine · three layers</summary><div class="bd">
+    <p>Charm is not something you add. It is what remains when you subtract the agenda. The full machine has three layers, and all three are needed:</p>
+    <h3>1 · The Root — nothing to protect</h3>
+    <p>Every person runs two hidden transactions in a room: get the outcome, and protect the self-image. Both leak pressure the other person can feel. The second one only switches off when identity is settled somewhere the room cannot touch. Ferguson got there by surviving destruction; you get there through the Root: if it is already settled with Allah before you enter, the room's verdict stops being existential. This layer is not practiced in rooms. It is built at Fajr.</p>
+    <h3>2 · The Stance — drop the transaction</h3>
+    <p>Abandon the outcome of the conversation. Not steering toward an anecdote, an impression, a number, a result. When the agenda goes, attention rushes into the vacuum, and the other person's guard-management has nothing to push against, so it quietly switches off. That relief is what charm feels like from the inside of the other person. The stance must be re-dropped continuously: every time you catch yourself steering, performing, or wanting something from the exchange, that catch is the cue to drop it again. Self-mockery and playfulness are the tools of re-dropping.</p>
+    <h3>3 · The Craft — trained instruments</h3>
+    <p>The stance creates presence; it does not create skill. Speed, reading, tactics, recovery are instruments, built by reps: the daily camera video, deliberate low-stakes practice, the after-action review. A secure man with no reps is pleasant furniture. A skilled man with no root is a performing seal. Train both, always.</p>
+  </div></details>
+
+  <details class="sec"><summary>The bodies · who to wear where</summary><div class="bd">
+    <p>Full specs, footage and run buttons live in the <b>Shifts</b> tab. The deployment map:</p>
+    <ul>
+      <li><b>Ferguson — the Player:</b> parties, banter, rooms needing energy, recovering awkwardness.</li>
+      <li><b>Brand — the Flow:</b> strangers, cold approaches, verbal courage, dissolving articulation fog.</li>
+      <li><b>The Uncle / Abo Abdullah — the Anchor:</b> one-on-one depth, family, elders, anyone struggling.</li>
+      <li><b>Wayne / Khalo Ibrahim — the Presence:</b> status rooms, negotiations, the urge to prove yourself.</li>
+      <li><b>The Alone Body:</b> every unseen moment. If this one holds, the others become descriptions, not performances.</li>
+    </ul>
+    <h3>With women — the blend</h3>
+    <p>Brand's warmth at Ferguson's playfulness under Wayne's restraint, carried in the Hit Man's frame. Fully unattached to outcome. The rule is subtraction: fewer compliments than you want to give, fewer messages than you want to send, more silence than feels comfortable. Flirtation stays ambient and directionless, pointed at everything so it points at nothing; the moment it wants something it becomes pressure. Harmless charm is restraint wearing a smile.</p>
+  </div></details>
+
+  <details class="sec"><summary>Warm-up · 10 min before any event</summary><div class="bd">
+    <ul>
+      <li><b>Mouth and voice (3m):</b> tongue twisters aloud, one paragraph read with exaggerated articulation, one minute of free speech in the shower or car. Five minutes of Ferguson footage counts as calibration. Never let the room hear your first sentence of the day.</li>
+      <li><b>Pick the primary body (1m):</b> by the map above.</li>
+      <li><b>Run the shift protocol (2m):</b> footage, step in, take the body, the line. Stay in it while getting ready; walk to the mirror in it.</li>
+      <li><b>Rehearsal (2m):</b> first person, in the body: door, greeting, first exchange. Then one awkward moment and you staying loose inside it. The awkward rep matters more than the smooth one.</li>
+      <li><b>Baseline skim (1m):</b> listen · question · empathize · compliment · common ground · play.</li>
+      <li><b>Sharpness token (30s):</b> the one physical trigger, always the same. Fully present, operating at 100%.</li>
+    </ul>
+  </div></details>
+
+  <details class="sec"><summary>Baseline conversation · the seven moves</summary><div class="bd">
+    <p>Non-sequential. These run continuously in every conversation.</p>
+    <h3>1 · Active listening — the most important</h3>
+    <p>Focused, phone invisible, body toward them. Minimal encouragers ("mm", "go on", head nods), remember details, and call back to something they said ten minutes ago; the callback is the strongest proof of listening that exists. Sherlock them: <i>I must figure out why this person is so interesting.</i></p>
+    <h3>2 · Questions</h3>
+    <p>Open-ended, aimed at finding something to appreciate. How did you get into it, what do you love about it, what is home like, what would you do with a free month. Their answers are the map to their soul; your job is to find the thing they light up about and stay there.</p>
+    <h3>3 · Empathy</h3>
+    <p>Verbalize what they are feeling before they do: "So you must have felt…", "You must really…", "That sounds like it was…". An empathic statement lands harder than any compliment because it proves you were inside their experience, not waiting to talk.</p>
+    <h3>4 · Compliments — indirect beats direct</h3>
+    <p>Let them compliment themselves: ask the question or make the exclamation that invites it ("How did you even manage that?"). Associate them with someone they admire ("you move like…", "that is a Muhammad Ali answer"). Deliver praise through third parties when possible; it filters back with double the weight (primacy effect, both directions: what they hear about you filters how they read you too).</p>
+    <h3>5 · Reciprocity</h3>
+    <p>Ask small favors and do small favors; both build the bond (asking works because people justify their own investment). Emotional favors count: validating a feeling is a favor.</p>
+    <h3>6 · Common ground</h3>
+    <p>Interests, cities, food, mutual people, studies, faith, hobbies; found vicariously through family and friends when not direct. Dress alike, speak alike, mirror lightly: similarity is liking.</p>
+    <h3>7 · Playfulness</h3>
+    <p>Humor and positivity as the resting temperature. Laughter drops guards faster than anything on this list. Tease lightly, self-mock first, keep it warm.</p>
+    <p class="dimtx small">Gradual self-disclosure threads through all seven: as you share, they share back. Escalate slowly. Never trauma-dump. Spark emotion, not logic; nobody bonds over information.</p>
+  </div></details>
+
+  <details class="sec"><summary>Push-pull · flirting mechanics, the Ferguson method</summary><div class="bd">
+    <h3>The frame</h3>
+    <p>Stop treating conversation with her as an exchange of information. Information is what forms fill out. The product is emotional texture: spikes of surprise, laughter, mock-offense, warmth, tension, release. A flat pleasant conversation is how you get filed under "nice." The spike is what gets remembered, and push-pull is the spike machine.</p>
+    <h3>What push-pull actually is</h3>
+    <p>A pull is warmth: a compliment, interest, closeness. A push is play: a tease, a challenge, a step back. Either one alone saturates: all pull and you are a fan on a pedestal-building mission, pressure disguised as kindness; all push and you are a jerk. Alternating them creates movement, and movement is what attraction feels like from the inside. <b>Run the ledger at roughly 50/50:</b> if you notice three compliments in a row, you owe a tease; three teases, you owe warmth. Ferguson never lets either side of the ledger run more than a beat or two ahead.</p>
+    <h3>The Ferguson signature moves</h3>
+    <ul>
+      <li><b>Escalate-release, the core move.</b> He pushes a flirty line further than expected, then instantly breaks it himself: laughs first, drops to mock-formality, changes the subject. <span class="script">"Honestly, the way you said that... no. No. We're moving on. This is a family show."</span> The release is what makes the push safe, and the snap between the two IS the spike. Never linger on the escalation waiting for it to land; abandoning it is the move.</li>
+      <li><b>Theatrical over-sincerity.</b> Absurd compliments delivered with mock-earnest gravity: <span class="script">"I want you to know that this is the greatest conversation of my adult life."</span> Obviously play, so it carries charge with zero pressure.</li>
+      <li><b>Role reversal — your cliche flip.</b> Say the lines women say to men, deadpan: <span class="script">"I bet you say that to all the guys." · "You're not like the others, are you." · "My eyes are up here." · "Are you flirting with me? Have some respect."</span> Casting her as the pursuer is the fastest frame flip in the game, and it is self-teasing and her-teasing in one line.</li>
+      <li><b>The under-reaction.</b> Do not reward everything with big responses. A raised eyebrow, a slow "...huh," a beat of deadpan where a laugh was expected. Scarcity of approval is what makes your approval land; the man who finds everything hilarious has nothing to give. This is a push made of silence.</li>
+      <li><b>Mock-offense.</b> Take playful offense at something innocent: <span class="script">"Wow. In my own city. Unbelievable."</span> Hands her a game to play back instantly.</li>
+      <li><b>The accusation.</b> Accuse her, smiling, of the thing you are doing: <span class="script">"Stop trying to charm me, it's not going to work. It's working a little."</span> Push and pull in a single sentence.</li>
+      <li><b>Callback flirtation.</b> Reuse a joke from ten minutes ago as a running bit. Every callback builds the private world of two, and the private world is the whole point.</li>
+      <li><b>Self-tease first.</b> Mock yourself before you tease her; it buys the license and proves the game is warm.</li>
+    </ul>
+    <h3>Teasing rules</h3>
+    <ul>
+      <li>Tease choices, never facts: her opinions, her taste, her playful claims, things she picked. Never body, family, insecurities, or anything she cannot change in the next five minutes.</li>
+      <li>One tease, then release. A tease extended into a second sentence becomes criticism.</li>
+      <li>Warmth audible in the voice, always. The smile carries the tease; deadpan works only when the eyes are laughing.</li>
+      <li>Lands flat? Ferguson-mourn it out loud, immediately: <span class="script">"I really thought that was going to be charming."</span> The recovery reads better than the tease would have.</li>
+    </ul>
+    <h3>The ladder — you go first</h3>
+    <p>The conversation goes wherever you go first, so lead it there yourself: want playful, be playful first; want depth, disclose first; want charge, add charge first. One rung at a time, by insinuation, never by statement; the old note had this exactly right: let the imagination do the work, straight is boring and heavy. Then read: reciprocated means one more rung; flat or deflected means step one rung back, at zero cost, because the exit was open and you built nothing that needs defending. Charge that arrives through wit and implication she can play with; charge that arrives as a statement she has to answer. The first is flirting, the second is pressure. And the ladder runs inside your own lines: Priority 1 sets the ceiling, not the mood of the night.</p>
+    <h3>The reading loop</h3>
+    <p>The dictionary above is the throttle. Green: pupils wide, torso and feet toward you, dragging words, playing the bits back, touch, the hair moves. Amber: polite answers with no questions back, flat mirroring. Red: lip compression, feet to the exit, pacifying gestures. Green climbs, amber holds and pulls warmth, red steps down and gives space without comment. Escalation follows reciprocation; that single rule is the entire difference between Ferguson and the version of push-pull that presses. She should leave feeling lifted and slightly outplayed, never managed.</p>
+    <h3>On the apps</h3>
+    <ul>
+      <li>Same ledger in text: playful beats efficient, and never answer everything; leave one thread teased and hanging.</li>
+      <li>Match her investment loosely: not shorter out of games, not triple-length out of eagerness.</li>
+      <li>One tease per few messages, warmth between. Emojis are the smile in your voice; use just enough that deadpan reads as play.</li>
+      <li>Never double-text into silence. Silence is her turn; the exit stays open in text too.</li>
+      <li>Move to voice or meeting once the bit is established. Chat rapport decays; a running joke is the bridge, not the destination.</li>
+    </ul>
+  </div></details>
+
+  <details class="sec"><summary>Reading people · the full dictionary</summary><div class="bd">
+    <p class="dimtx small">Three rules before any sign: read <b>clusters</b>, never single signals; read <b>changes from their baseline</b>, not absolutes; most touching-the-self behaviors are <b>pacifiers</b>, meaning stress is present, not what caused it. A signal tells you when to change course, not what is true.</p>
+    <h3>Comfort · rapport is building</h3>
+    <table class="bl">
+      <tr><td>Feet or torso turned toward you</td><td>interest, engagement</td></tr>
+      <tr><td>Feet askew in a group</td><td>open conversation, you may join</td></tr>
+      <tr><td>Head tilt</td><td>comfortable, receptive, friendly</td></tr>
+      <tr><td>Mirroring your posture or pace</td><td>rapport established</td></tr>
+      <tr><td>No barriers (cup, bag, arms) between you</td><td>rapport established</td></tr>
+      <tr><td>Pupils dilated</td><td>liking what they see or hear</td></tr>
+      <tr><td>Dragging out a word, upbeat pace</td><td>interest in the topic</td></tr>
+      <tr><td>Toes pointing upward</td><td>good mood</td></tr>
+      <tr><td>Comfortable leg cross, steepled hands</td><td>at ease, confident</td></tr>
+      <tr><td>Thumbs visible (out of pockets, up)</td><td>confidence, positive state</td></tr>
+      <tr><td>Hair flip toward you, sharing food, light touch</td><td>strong rapport</td></tr>
+      <tr><td>Chin out, nose level or high</td><td>comfort, confidence</td></tr>
+    </table>
+    <h3>Discomfort · change course</h3>
+    <table class="bl">
+      <tr><td>Feet or torso toward the exit</td><td>disengaged; wrap up or re-hook</td></tr>
+      <tr><td>Feet facing each other in a pair</td><td>closed conversation; do not join</td></tr>
+      <tr><td>Lip compression or purse</td><td>disagreement they are not voicing</td></tr>
+      <tr><td>Lip bite or lip touching</td><td>hesitant or uneasy about the topic</td></tr>
+      <tr><td>Neck touching, covering the neck dimple</td><td>real-time doubt, insecurity, concern</td></tr>
+      <tr><td>Face touching, hand rubbing, palm-cleaning on lap</td><td>pacifying: stress is present</td></tr>
+      <tr><td>Rubbing the forehead</td><td>struggling with something</td></tr>
+      <tr><td>Arm cross gripping the arms, cup held as a shield</td><td>barrier up; rapport not established</td></tr>
+      <tr><td>Ankle lock, kicking a crossed foot</td><td>discomfort, restraint</td></tr>
+      <tr><td>Uncrossing legs when someone enters</td><td>dislike of who walked in</td></tr>
+      <tr><td>Chin tuck, crinkled nose, squint</td><td>discomfort or dislike</td></tr>
+      <tr><td>Partial one-shoulder shrug</td><td>low commitment to what they just said</td></tr>
+      <tr><td>High blink rate vs baseline, nail biting</td><td>nervous</td></tr>
+      <tr><td>Brief eye-block (touching or covering eyes)</td><td>negative reaction to what was said</td></tr>
+      <tr><td>Hidden hands, finger pointing</td><td>negative impression given or forming</td></tr>
+      <tr><td>Puffed chest, territorial splaying</td><td>dominance display; de-escalate or leave</td></tr>
+    </table>
+    <h3>Voice</h3>
+    <table class="bl">
+      <tr><td>Deep and low</td><td>romantic register</td></tr>
+      <tr><td>High pitch spike</td><td>surprise or skepticism</td></tr>
+      <tr><td>Fast</td><td>urgency, or trying to end a boring exchange</td></tr>
+      <tr><td>Slow, soft, monotone</td><td>disinterest or shyness</td></tr>
+      <tr><td>Slow, soft, normal inflection</td><td>empathy</td></tr>
+      <tr><td>Loud</td><td>overbearing; lower yours, do not match</td></tr>
+    </table>
+    <p class="dimtx small">Getting approached or gauging interest across a room: hold eye contact one second, look away, return with a head tilt for two seconds. Interest returned twice is an invitation.</p>
+  </div></details>
+
+  <details class="sec"><summary>The laws · why people bond</summary><div class="bd">
+    <ul>
+      <li><b>Emotion:</b> people bond over feelings, never information. Spark emotion in every exchange.</li>
+      <li><b>Misattribution:</b> shared mild adventure or intensity gets attributed to the people present. Do things together, not just talks.</li>
+      <li><b>Association:</b> you are read through who you stand with, and they through their group.</li>
+      <li><b>Self-esteem:</b> the secure attract, because they can afford to be disliked.</li>
+      <li><b>Curiosity:</b> hook first, reveal gradually. Never fully explained is never fully done with you.</li>
+      <li><b>Self-disclosure:</b> sharing invites sharing. Escalate in small steps, both directions.</li>
+      <li><b>Humor:</b> laughter lowers guards and anxiety faster than anything else.</li>
+      <li><b>Familiarity and proximity:</b> repeated presence breeds liking. Show up where they are, again.</li>
+      <li><b>Scarcity and restraint:</b> what is limited is valued; what is restricted is wanted. Selective presence beats constant availability.</li>
+      <li><b>Rocky road:</b> distance makes the closeness that follows sweeter. Absence is a tool.</li>
+      <li><b>Personality:</b> meet each person through their lens, not yours.</li>
+      <li><b>Complementarity:</b> people like those who make them feel good about themselves. The whole codex in one law.</li>
+    </ul>
+    <p class="dimtx small">LOVE, the compression of it all: Listen, Observe, Vocalize, Empathize.</p>
+  </div></details>
+
+  <details class="sec"><summary>Tactics · situational tools</summary><div class="bd">
+    <ul>
+      <li><b>Elicitation:</b> to learn something they will not answer directly, state an assumption high or low ("so the margin must be around 150 percent") and let the correction reveal the truth.</li>
+      <li><b>Face saving:</b> to get your wish, let them feel in control: offer two options you are equally happy with and let them choose.</li>
+      <li><b>Ego calibration:</b> with a superior, make the idea theirs. With someone junior or nervous, make a small deliberate error so they can relax or correct you.</li>
+      <li><b>Ask advice upward:</b> the fastest softener of higher-status people. Must be something they genuinely know and cannot be searched.</li>
+      <li><b>Status elevation:</b> associate them with someone admired: "that is a Mo Salah work rate." Recognition beats flattery.</li>
+      <li><b>Echoing:</b> repeat their last two or three words with a rising tone; they elaborate every time.</li>
+      <li><b>Hard questions:</b> answer a difficult question with a relevant question. Buys thought, keeps frame.</li>
+      <li><b>Anger protocol:</b> first assess: manic or cooled. If hot, let them vent fully, no interruption. Then empathic statements, then presumptive solutions, then the two-option choice so they leave feeling in control.</li>
+      <li><b>The dog welcome:</b> when anyone enters your space, open up, light up, greet like their arrival improved the room. First and last impressions are 80 percent of the memory.</li>
+      <li><b>Warm goodbye, always:</b> wrap up, appreciate, name the next touchpoint. The February regret is permanent law: never leave without it, however tired.</li>
+      <li><b>Names and dear-names:</b> use their name, and warm address for those close: habibi, my dear, the best. People rise to what you call them.</li>
+      <li><b>Non-verbal safety:</b> never invade space uninvited, keep hands visible, square gently rather than head-on, match energy then lead it down or up.</li>
+    </ul>
+  </div></details>
+
+  <details class="sec"><summary>Playbooks · by situation</summary><div class="bd">
+    <h3>Friends</h3>
+    <p class="script">Greeting + intro + question: "Hala wallah — how have you been? How did the thing with X go?"</p>
+    <p>The callback to their last topic is the move. It proves the relationship has memory.</p>
+    <h3>Workers and staff</h3>
+    <p class="script">"Good afternoon — could you help me with X?" then one empathic or observational line: "busy shift today?" or "I like the setup here, is that new?"</p>
+    <p>Structure: greeting, polite request, then one human beat. Question, appreciate, common ground. Treat staff with the same weight as principals; the room always notices.</p>
+    <h3>Cold approach · university, gym, class</h3>
+    <p class="script">"Hey — you are in [course] with [professor], right? How are you finding it?" · "Mind if I get your take on X? I am working on it and want another perspective."</p>
+    <p>Greeting plus a question about the shared context. The shared context is the permission.</p>
+    <h3>Cold approach · street, cafe, event</h3>
+    <p class="script">"Excuse me — great outfit, I had to say it." Then leave, or one question: "where is it from?"</p>
+    <p>Greeting, compliment, exit or question. The willingness to leave immediately is what makes it charming instead of pressure.</p>
+    <h3>Parties and events</h3>
+    <p>Ferguson body. Go first: greet the host, then the room. Scan for feet-askew groups, join at an angle, listen seventy percent, contribute play, not facts. Notice something in the environment and hand it to the group. Compliment through third parties. Names on entry, warm goodbyes on exit, every single person you spoke with.</p>
+    <h3>Status rooms</h3>
+    <p>Wayne or Khalo Ibrahim body. Fewer words than everyone. Slow head, comfortable silence, remember names, greet the smallest person with the same weight as the biggest. Ask advice upward. Never compete for the floor; the man who needs it least holds it.</p>
+    <h3>Dates</h3>
+    <p>The blend, plus occasion prep from Manual 4, with the push-pull module as the conversational engine. Logistics you control fully: place, timing, grooming complete. Then subtraction the whole night: listen, play, run the ledger, one sincere observation about her that is not about looks, end slightly earlier than she expects. The 36-questions ladder exists if depth is wanted: escalate disclosure gradually, both directions.</p>
+    <h3>Conflict and complaints</h3>
+    <p>Anger protocol from Tactics. Never defend first; empathize first. Face-saving exit for them even when you are right, especially when you are right.</p>
+    <h3>Being listened to</h3>
+    <p>Posture radiating from the center, eye contact held through sentence ends, pitch dropping at the end of statements, pauses left unfilled, contribution rate high but sentence count low. The room gives the floor to whoever is visibly comfortable holding it.</p>
+  </div></details>
+
+  <details class="sec"><summary>Starters bank</summary><div class="bd">
+    <ul>
+      <li>How did you get into [their work]? What made you stay?</li>
+      <li>What is home like for you — what do you love, what is the struggle?</li>
+      <li>How do you like to spend your time here?</li>
+      <li>What is something you love doing that people would not guess?</li>
+      <li>What is a moment from this year that made you genuinely happy?</li>
+      <li>Indoor or outdoor person? One place you would go tomorrow if you could?</li>
+      <li>[Callback]: last time you mentioned X — how did it go?</li>
+      <li>[Observation]: hand the group something in the environment: the music, the setup, the view.</li>
+      <li>[Indirect compliment]: "How are you this good at this?" — the question that lets them shine.</li>
+    </ul>
+  </div></details>
+
+  <details class="sec"><summary>Study shelf · flirting the Ferguson way</summary><div class="bd">
+    <h3>How to study, or this shelf becomes entertainment</h3>
+    <p>One clip per week, maximum. Watch it twice: once for enjoyment, once for extraction. Name <b>one</b> behavior you saw (the exit left open after a tease, the compliment delivered then abandoned, the laugh at his own line) and make it the week's rep in real rooms. Ten breakdowns watched is a night of YouTube; one behavior installed is training. Breakdowns feed the craft layer; raw Ferguson clips feed the shift layer, because the footage bank is what the body shift runs on. You need both, raw more than analysis.</p>
+    <h3>The shelf</h3>
+    <div class="linkrow">
+      <a href="https://www.youtube.com/watch?v=5g9fRXdVTG8" target="_blank" rel="noopener">The clip you sent — COC flirting breakdown ↗</a>
+      <a href="https://www.youtube.com/watch?v=8NalcOPBXvs" target="_blank" rel="noopener">COC: habits women are naturally drawn to (Ferguson) ↗</a>
+      <a href="https://www.youtube.com/playlist?list=PLlfVk4a_42oH6ZfLfvX5weVRQxVv7pluE" target="_blank" rel="noopener">Playlist: Ferguson — charisma and flirting ↗</a>
+      <a href="https://www.youtube.com/results?search_query=craig+ferguson+flirting+compilation" target="_blank" rel="noopener">Raw footage: Ferguson flirting compilations ↗</a>
+      <a href="https://www.youtube.com/results?search_query=charisma+on+command+flirt+without+being+creepy" target="_blank" rel="noopener">COC: flirting without being creepy ↗</a>
+      <a href="https://www.youtube.com/results?search_query=charisma+on+command+banter" target="_blank" rel="noopener">COC: banter mechanics ↗</a>
+      <a href="https://www.youtube.com/results?search_query=school+of+life+how+to+flirt" target="_blank" rel="noopener">School of Life: the philosophy of flirting ↗</a>
+      <a href="https://www.youtube.com/results?search_query=hit+man+2023+glen+powell+scenes" target="_blank" rel="noopener">Hit Man scenes — the frame ↗</a>
+    </div>
+    <h3>What the shelf deliberately excludes</h3>
+    <p>The Brand flirting breakdowns, including the push-pull material. Two reasons, independent of each other. First, his style, as those breakdowns themselves describe it, is pressure and escalation: hot-cold cycling, physical advance before invitation, wearing resistance down. That is the retired Seduction-note method with a celebrity face on it, and it is the exact opposite of your standard, where the tease always leaves the exit open and the charm needs nothing back. Ferguson escalates and releases; Brand escalated and pressed. Second, he is currently awaiting trial on serious sexual-offence charges spanning the same era those charm clips come from; he denies all of it and the court will decide, but study material for how to be with women should not require a footnote. If Brand stays in your roster at all, he stays for verbal flow and articulation only, never for this module.</p>
+  </div></details>
+
+  <details class="sec"><summary>Recovery · when it goes wrong</summary><div class="bd">
+    <ul>
+      <li><b>A joke dies:</b> mourn it theatrically, immediately: "I really thought that one was going to work." The death becomes the next bit. Once awkwardness is material, nothing can go wrong, and the whole room relaxes because you did.</li>
+      <li><b>Awkward silence:</b> name it playfully or hand the group an observation. Never fill it with nervous words; comfortable silence held for two extra seconds reads as confidence.</li>
+      <li><b>Mid-conversation slip</b> (performing, chasing, fogging): five-second reset while they talk: posture, breath, the body's line. Nobody sees it.</li>
+      <li><b>Went cold or flat:</b> drop the transaction again. You started steering; that is the whole diagnosis. Return to curiosity about them.</li>
+      <li><b>You froze on articulation:</b> slow down instead of speeding up, shorten sentences, ask a question to hand the floor over while the Brand body reloads.</li>
+      <li><b>After a bad interaction:</b> one rep of the review, then done. In a month it will not mean much in terms of emotion; you wrote that yourself and it was true.</li>
+    </ul>
+  </div></details>
+
+  <details class="sec"><summary>The Alone body · the daily rep · review</summary><div class="bd">
+    <h3>The third character</h3>
+    <p>Social, Business, Alone. The Alone body decides whether the other two are real: the door closes and nothing drops. <i>"Who I am when unseen is who I actually am."</i> If it holds, the others become descriptions, not performances.</p>
+    <h3>Daily articulation rep</h3>
+    <p>One video daily, 60 to 90 seconds, camera on, inside the Brand body, first thought spoken with no vetting: the zero-gap rep. Posted or deleted, irrelevant. This is the craft layer's gym.</p>
+    <h3>Review</h3>
+    <p>After any significant interaction, 60 seconds: which body was I in, did it hold, which move from the baseline was missing, what would I redo. Patterns only, no transcripts. The same mistake three times becomes the fortnight's focus at the rewrite.</p>
+    <p class="dimtx small"><b>The license, permanent:</b> everything in this codex is worn for people, never against them. The moment a tool is used to extract rather than to give someone your best company, it violates the Golden Rule and Priority 1 at once. Charm in service of making people feel good is the entire permission.</p>
+  </div></details>
+
   <div class="spacer"></div>
 </section>
 
@@ -556,7 +797,7 @@ const CHARS=[
   body:'Loose shoulders, slight lean back, unhurried speech with sudden bursts. Laughs at himself first. Holds eye contact through the joke.',
   line:'None of this is serious, and that is why everyone relaxes around me.',
   deploy:'Parties · group banter · rooms that need energy · recovering an awkward moment (awkwardness is material, not danger).',
-  links:[{label:'YouTube: Ferguson at his loosest',url:'https://www.youtube.com/results?search_query=craig+ferguson+funniest+moments'},{label:'YouTube: Ferguson charm compilations',url:'https://www.youtube.com/results?search_query=craig+ferguson+flirting+compilation'}]},
+  links:[{label:'The clip you sent — COC flirting breakdown',url:'https://www.youtube.com/watch?v=5g9fRXdVTG8'},{label:'COC: habits women are naturally drawn to (Ferguson)',url:'https://www.youtube.com/watch?v=8NalcOPBXvs'},{label:'Playlist: Ferguson — charisma and flirting',url:'https://www.youtube.com/playlist?list=PLlfVk4a_42oH6ZfLfvX5weVRQxVv7pluE'},{label:'YouTube: Ferguson at his loosest',url:'https://www.youtube.com/results?search_query=craig+ferguson+funniest+moments'}]},
  {id:'brand',name:'Russell Brand',slot:'The Flow',area:'Social',
   footage:'An interview where he walks into a formal or hostile room and disarms it in a minute: names, touch on the shoulder, compliments too fast to doubt, words outrunning fear.',
   body:'Animated hands, forward energy, big warm eye contact, fast articulate speech. Physically expressive, unafraid of anyone\u2019s status.',
