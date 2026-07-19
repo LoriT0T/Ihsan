@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Note</title>
+<style>
+:root{
+  --ink:#14100c; --ink2:#1c1712; --ink3:#241d15;
+  --line:#332a1e; --line2:#453826;
+  --parch:#eadfc9; --dim:#a08f73; --faint:#6f6350;
+  --brass:#c9a15a; --brass2:#e2c384;
+  --green:#5d8a6c; --ember:#c06045;
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--ink);color:var(--parch);font-family:var(--serif);font-size:17px;line-height:1.6;min-height:100vh;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+::selection{background:rgba(201,161,90,.3)}
+button{font-family:var(--sans);cursor:pointer;border:none;background:none;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+a{color:var(--brass2);text-decoration:none}
+input,textarea,select{font-family:var(--serif);font-size:16px;color:var(--parch);background:var(--ink3);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:64px}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+.topbar{position:sticky;top:0;z-index:30;background:linear-gradient(var(--ink) 78%,rgba(20,16,12,0));padding:14px 0 18px}
+.topbar .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.brand{font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+.today{font-family:var(--sans);font-size:11px;letter-spacing:.08em;color:var(--faint)}
+
+.eyebrow{font-family:var(--sans);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);margin-bottom:8px}
+.eyebrow.dim{color:var(--dim)}
+h1{font-size:30px;line-height:1.2;font-weight:600;letter-spacing:.01em}
+h2{font-size:21px;line-height:1.3;font-weight:600;margin-bottom:10px}
+h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.small{font-size:14px}.dimtx{color:var(--dim)}.fainttx{color:var(--faint)}
+hr.rule{border:none;border-top:1px solid var(--line);margin:26px 0}
+
+.bismillah{text-align:center;font-size:21px;color:var(--brass2);margin:10px 0 4px;font-family:var(--serif)}
+.root{text-align:center;font-size:14.5px;color:var(--dim);font-style:italic;max-width:460px;margin:0 auto 8px}
+
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+.badge{font-family:var(--sans);font-size:11px;letter-spacing:.06em;padding:5px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--dim)}
+.badge.due{border-color:rgba(192,96,69,.55);color:var(--ember)}
+.badge.ok{border-color:rgba(93,138,108,.5);color:var(--green)}
+.badge.brass{border-color:rgba(201,161,90,.5);color:var(--brass2)}
+
+.prio{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:22px 0;border-top:1px solid var(--line)}
+.prio:first-of-type{border-top:none}
+.pnum{font-size:30px;color:var(--brass);line-height:1;padding-top:2px;text-align:center}
+.ptitle{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.pbody{font-size:16.5px}
+.pshift{margin-top:10px;font-size:14px;color:var(--brass2)}
+.pshift b{font-weight:600}
+.panchor{margin-top:8px;font-size:13.5px;color:var(--dim)}
+.panchor b{color:var(--parch);font-weight:600;font-family:var(--sans);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase}
+
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+.card h3{margin-bottom:10px}
+.field{margin:12px 0}
+.field label{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:13px;letter-spacing:.06em;padding:12px 18px;border-radius:10px;border:1px solid var(--line2);color:var(--parch);background:var(--ink3);transition:border-color .15s}
+.btn:hover{border-color:var(--brass)}
+.btn.primary{background:var(--brass);color:#1a1410;border-color:var(--brass);font-weight:600}
+.btn.primary:hover{background:var(--brass2);border-color:var(--brass2)}
+.btn.wide{width:100%}
+.btn.ghost{border-color:transparent;color:var(--dim);padding:8px 10px}
+.btn.ghost:hover{color:var(--parch)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+.list{display:grid;gap:10px}
+.rowlink{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--parch);text-align:left;width:100%;font-family:var(--serif);font-size:16px}
+.rowlink:hover{border-color:var(--brass)}
+.rowlink .sub{font-size:13px;color:var(--dim);margin-top:2px}
+.rowlink .arw{color:var(--faint);font-family:var(--sans)}
+.rowlink .n{color:var(--brass);width:26px;text-align:center;font-size:19px;flex:none}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:430px){.grid2{grid-template-columns:1fr}}
+
+.charcard{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:left;width:100%;color:var(--parch);font-family:var(--serif);display:block}
+.charcard:hover{border-color:var(--brass)}
+.charcard .slot{font-family:var(--sans);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);margin-bottom:4px}
+.charcard .nm{font-size:17px;font-weight:600}
+.charcard .ar{font-size:12.5px;color:var(--dim);margin-top:3px}
+.charcard.focus{border-color:rgba(201,161,90,.6);box-shadow:0 0 0 1px rgba(201,161,90,.25)}
+.focus-tag{font-family:var(--sans);font-size:9.5px;letter-spacing:.14em;color:var(--brass2);text-transform:uppercase;margin-top:6px}
+
+.sheet-scrim{position:fixed;inset:0;background:rgba(10,8,5,.72);z-index:60;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:86vh;overflow:auto;background:var(--ink2);border-top:1px solid var(--line2);border-radius:18px 18px 0 0;z-index:61;padding:22px 20px calc(28px + env(safe-area-inset-bottom));display:none}
+.sheet.on,.sheet-scrim.on{display:block}
+.sheet .inner{max-width:640px;margin:0 auto}
+.sheet .close{position:sticky;top:0;float:right;color:var(--dim);font-size:22px;line-height:1;padding:4px 8px}
+.kv{margin:14px 0}
+.kv .k{font-family:var(--sans);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:4px}
+.kv .v{font-size:15.5px}
+.linequote{font-size:19px;font-style:italic;color:var(--brass2);border-left:2px solid var(--brass);padding-left:14px;margin:16px 0}
+.linkrow{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.linkrow a{display:block;font-family:var(--sans);font-size:13px;padding:10px 12px;border:1px solid var(--line2);border-radius:9px;color:var(--brass2)}
+.linkrow a:hover{border-color:var(--brass)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--sans);font-size:12.5px;letter-spacing:.04em;padding:9px 13px;border-radius:999px;border:1px solid var(--line2);color:var(--dim);background:var(--ink3)}
+.chip[aria-pressed="true"]{border-color:var(--green);color:#cfe4d6;background:rgba(93,138,108,.16)}
+
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--ink3);border:1px solid var(--line)}
+.dot.hit{background:var(--green);border-color:var(--green)}
+.dot.miss{background:rgba(192,96,69,.5);border-color:transparent}
+
+table.wk{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13px;margin-top:10px}
+table.wk td,table.wk th{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;color:var(--dim)}
+table.wk th{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+table.wk td:first-child{color:var(--parch)}
+
+.manual h2{margin-top:26px;color:var(--brass2);font-size:18px}
+.manual h2:first-of-type{margin-top:8px}
+.manual p{margin:10px 0}
+.manual ul{margin:10px 0 10px 20px}
+.manual li{margin:7px 0;font-size:15.5px}
+.manual .note{font-size:14px;color:var(--dim);border-left:2px solid var(--line2);padding-left:12px;margin:12px 0}
+.manual b{color:var(--parch)}
+
+.runner{position:fixed;inset:0;z-index:80;background:var(--ink);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px}
+.runner.on{display:flex}
+.pulse{position:absolute;width:min(78vw,430px);height:min(78vw,430px);border-radius:50%;background:radial-gradient(circle,rgba(201,161,90,.14),rgba(201,161,90,0) 65%);animation:breath 10s ease-in-out infinite;pointer-events:none}
+@keyframes breath{0%{transform:scale(.82)}40%{transform:scale(1)}100%{transform:scale(.82)}}
+@media(prefers-reduced-motion:reduce){.pulse{animation:none}}
+.r-eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin-bottom:14px}
+.r-title{font-size:27px;font-weight:600;margin-bottom:14px;max-width:560px}
+.r-body{font-size:17px;max-width:540px;color:var(--parch)}
+.r-body i{color:var(--brass2)}
+.r-time{font-family:var(--sans);font-size:13px;letter-spacing:.1em;color:var(--dim);margin-top:22px}
+.r-bar{width:min(70vw,380px);height:2px;background:var(--line);border-radius:2px;margin:10px auto 0;overflow:hidden}
+.r-bar i{display:block;height:100%;background:var(--brass);width:0%}
+.r-ctl{display:flex;gap:12px;margin-top:26px;z-index:2}
+.r-step{font-family:var(--sans);font-size:11px;color:var(--faint);letter-spacing:.14em;margin-top:16px}
+
+.navbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(20,16,12,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.navbar .in{max-width:680px;margin:0 auto;display:flex}
+.tab{flex:1;padding:11px 4px 10px;text-align:center;font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.tab .g{display:block;font-family:var(--serif);font-size:17px;margin-bottom:3px;color:var(--faint)}
+.tab.on{color:var(--brass2)}.tab.on .g{color:var(--brass)}
+.page{display:none;animation:fade .18s ease}
+.page.on{display:block}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.page{animation:none}}
+.spacer{height:36px}
+.savenote{font-family:var(--sans);font-size:12px;color:var(--green);margin-top:8px;min-height:16px}
+</style>
+</head>
+<body>
+
+<header class="topbar"><div class="wrap">
+  <div class="brand">The Note</div>
+  <div class="today" id="topDate"></div>
+</div></header>
+
+<main class="wrap">
+
+<!-- ============ HOME: THE NOTE ============ -->
+<section class="page" id="page-home">
+  <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+  <p class="root">My root is me. Allah is the decider, the Prophet ﷺ is my idol, and the Quran is my light. Every shift is a garment over this root, never a replacement for it.</p>
+  <div class="badges" id="badges"></div>
+
+  <div class="prio"><div class="pnum">١</div><div>
+    <div class="ptitle">Allah first</div>
+    <div class="pbody">I walk with Allah before anything. Five prayers, on time, every day. I seek forgiveness daily and my idle moments belong to dhikr, not the phone. I respect His boundaries and do not negotiate them. My clarity, energy, and every open door comes from Him, and I act like I know it.</div>
+    <div class="pshift"><b>Shift:</b> Sulaiman عليه السلام — power carried lightly, gratitude carried heavily. <i>"All of this is from my Lord, to test whether I am grateful."</i></div>
+    <div class="panchor"><b>Anchors</b> — Adhan sounds, I stop. Idle moments, istighfar. Before sleep, Quran on.</div>
+  </div></div>
+
+  <div class="prio"><div class="pnum">٢</div><div>
+    <div class="ptitle">People second</div>
+    <div class="pbody">I am a pleasure to be around. I go first and go positive in every room. I read the person in front of me and become the best company for them specifically. I listen more than I speak, make people feel good, seen, and appreciated, and leave every interaction warmer than I found it. With women I am charming, playful, and completely harmless. I never chase, never impress, never press.</div>
+    <div class="pshift"><b>Roster:</b> Ferguson for play · Brand for flow · The Uncle for depth · Wayne / Khalo Ibrahim for presence.</div>
+    <div class="panchor"><b>Anchors</b> — Enter any room, greet first. Urge to impress, ask a question instead. Before events, run the warm-up.</div>
+  </div></div>
+
+  <div class="prio"><div class="pnum">٣</div><div>
+    <div class="ptitle">Health third</div>
+    <div class="pbody">My body is athletic and lean, 80kg at 178cm: visible abs, wide back, strong legs. I train with intent, weights plus cardio plus abs, and I eat like the body is the output of the kitchen. 160g protein daily: two meals at 50g, two shakes at 30g. Sleep is protected, supplements are deliberate, nothing is left to mood.</div>
+    <div class="pshift"><b>Shift:</b> David Laid mid-set. <i>"Every rep is filmed, so every rep is perfect."</i></div>
+    <div class="panchor"><b>Anchors</b> — Training lives on the calendar. Protein is four checkmarks. In bed on time, phone out of reach.</div>
+  </div></div>
+
+  <div class="prio"><div class="pnum">٤</div><div>
+    <div class="ptitle">Looks fourth</div>
+    <div class="pbody">I look my best without exception. Hair styled, skin clear, teeth white, beard and nails groomed, scent right, contacts in when the occasion calls. Looking good is a system that runs on routine, not motivation, and it uplifts the natural, it does not mask it.</div>
+    <div class="pshift"><b>Shift:</b> the Routine in the mirror, Barrett outside it. <i>"There is an exact way this is done, and I do it exactly."</i></div>
+    <div class="panchor"><b>Anchors</b> — AM and PM routines bookend the day. Weekly grooming slot is fixed.</div>
+  </div></div>
+
+  <div class="prio"><div class="pnum">٥</div><div>
+    <div class="ptitle">Career fifth</div>
+    <div class="pbody">My work compounds toward the master's and the PhD. I go deep in AI and quantum daily, deep enough to produce research, not just consume it. I stay literate in finance, business, and politics because a professor who shapes thought must understand the world he speaks into. I do not chase money. Knowledge flows first; opportunity and income follow it naturally.</div>
+    <div class="pshift"><b>Shift:</b> Feynman at the blackboard. <i>"I want to actually understand this, not sound like I do."</i></div>
+    <div class="panchor"><b>Anchors</b> — One deep block daily before anything shallow. One paper weekly, own words. Ventures never take the deep slot.</div>
+  </div></div>
+
+  <div class="prio"><div class="pnum">٦</div><div>
+    <div class="ptitle">Life sixth</div>
+    <div class="pbody">My life is full outside the work. I ride, I box, I travel, I learn Chinese, I am learning to swim, and I enjoy anime without guilt because it is scheduled, not stolen. Experiences are booked like appointments. I collect stories, not screen time.</div>
+    <div class="pshift"><b>Shift:</b> you, from the camera roll. <i>"This is what the money and discipline are for."</i></div>
+    <div class="panchor"><b>Anchors</b> — One hobby session booked every week. Next month's experience planned before the month begins.</div>
+  </div></div>
+
+  <hr class="rule">
+  <div class="card">
+    <div class="eyebrow">Today</div>
+    <div class="field"><label for="obstacle">Today's obstacle</label>
+      <input id="obstacle" placeholder="What will try to break the character today?"></div>
+    <div class="field"><label for="response">When it hits, I will…</label>
+      <input id="response" placeholder="The exact response, pre-decided."></div>
+    <div class="field"><label for="primaryShift">Today's primary shift</label>
+      <select id="primaryShift"></select></div>
+    <div class="btnrow">
+      <button class="btn primary wide" id="startMorning">Begin morning practice · 8 min</button>
+    </div>
+    <div class="savenote" id="homeSaved"></div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ MANUALS INDEX ============ -->
+<section class="page" id="page-manuals">
+  <div class="eyebrow">Part two</div>
+  <h1>The Manuals</h1>
+  <p class="dimtx small" style="margin:8px 0 18px">Reference, not daily reading. Open what the day needs.</p>
+  <div class="list">
+    <button class="rowlink" data-go="m1"><span class="n">١</span><span style="flex:1"><span>Allah</span><div class="sub">Prayer, dhikr, the 30-minute rule, boundaries</div></span><span class="arw">›</span></button>
+    <button class="rowlink" data-go="m2"><span class="n">٢</span><span style="flex:1"><span>People</span><div class="sub">The four bodies, warm-up, the blend, the Alone body</div></span><span class="arw">›</span></button>
+    <button class="rowlink" data-go="m3"><span class="n">٣</span><span style="flex:1"><span>Health</span><div class="sub">Lean bulk to 80kg, training, sleep, supplements</div></span><span class="arw">›</span></button>
+    <button class="rowlink" data-go="m4"><span class="n">٤</span><span style="flex:1"><span>Looks</span><div class="sub">AM/PM routines, weekly slot, occasion prep</div></span><span class="arw">›</span></button>
+    <button class="rowlink" data-go="m5"><span class="n">٥</span><span style="flex:1"><span>Career</span><div class="sub">Deep blocks, weekly output, ventures</div></span><span class="arw">›</span></button>
+    <button class="rowlink" data-go="m6"><span class="n">٦</span><span style="flex:1"><span>Life</span><div class="sub">Active roster, containers, travel</div></span><span class="arw">›</span></button>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ MANUAL PAGES ============ -->
+<section class="page manual" id="page-m1">
+  <button class="btn ghost" data-go="manuals">‹ Manuals</button>
+  <div class="eyebrow">Manual ١</div><h1>Allah</h1>
+  <h2>The standard</h2><p>Five on time. Daily istighfar. Idle time is dhikr time. Boundaries respected without debate. Quran contact daily, memorization growing weekly.</p>
+  <h2>The shift</h2><p><b>Sulaiman عليه السلام</b>, and behind him <b>Dawud عليه السلام</b>: strength, kingdom, and craft, paired with constant turning back to Allah. The footage is not video, it is the verses: build the scene from the Quran (the wind, the armies, the ant, the throne of Bilqis) and hold the posture it implies: upright, unhurried, certain of Who provides. Use it entering prayer, at temptation, and when success inflates the ego. The line: <i>"This is from the favor of my Lord."</i></p>
+  <h2>Daily protocol</h2>
+  <ul>
+    <li><b>Fajr is the keystone.</b> The system rises and falls with it. Sleep time is set backwards from Fajr, never forwards from the evening.</li>
+    <li><b>After each prayer:</b> adhkar (33/33/34 + Ayat al-Kursi minimum). Five built-in identity resets a day, stronger than any affirmation.</li>
+    <li><b>The 30-minute rule:</b> when lost, foggy, or off-track, do not troubleshoot the schedule. Thirty minutes of prayer and Quran. Your own notes recorded it outperforming everything else for clarity. Tested data.</li>
+    <li><b>Before sleep:</b> Quran audio on, phone otherwise done.</li>
+  </ul>
+  <h2>Boundaries</h2><p>Name your two or three recurring boundary risks privately at the biweekly rewrite. For each, one if-then: "If X situation, I do Y exit." At the moment of temptation, run the Sulaiman shift physically: spine, breath, line. A boundary defended by a body beats one defended by a rule.</p>
+  <h2>Review</h2><p>The evening check asks one question here: all five on time? If a prayer slips three days running, the schedule around it is wrong. Fix the schedule, not the intention.</p>
+  <div class="spacer"></div>
+</section>
+
+<section class="page manual" id="page-m2">
+  <button class="btn ghost" data-go="manuals">‹ Manuals</button>
+  <div class="eyebrow">Manual ٢</div><h1>People</h1>
+  <p class="note">The old Social note stays the master tactics reference (reading people, laws, workflows). This manual sits above it: who you become, how you warm up, which body in which room. The Golden Rule is the entire game: get them talking, listen, empathize, respond positively, make them feel good.</p>
+  <h2>The roster</h2>
+  <p>Four bodies plus alternates, each fully specified in the <b>Shifts</b> tab: footage, physicality, line, deployment. Ferguson the Player · Brand the Flow · the Uncle the Anchor · Wayne the Presence, with Khalo Ibrahim and Abo Abdullah as real-footage alternates that often beat celebrity clips because the memory is yours.</p>
+  <h2>With women: the blend</h2>
+  <p>Brand's warmth and verbal ease, at Ferguson's playfulness, governed by Wayne's restraint, carried in the Hit Man's frame. Charming, funny, fully unattached to outcome. The operating rule is subtraction: fewer compliments than you want to give, fewer messages than you want to send, more silence than feels comfortable. Harmless charm is mostly restraint wearing a smile.</p>
+  <h2>Warm-up · before any planned event · 10 min</h2>
+  <ul>
+    <li><b>Mouth and voice (3m):</b> tongue twisters aloud, one paragraph read with exaggerated articulation, one minute of free speech. Clear the fog before the room does it for you.</li>
+    <li><b>Pick the primary shift (1m):</b> party = Ferguson. Networking = Wayne. Strangers or a date = Brand. Depth = Uncle.</li>
+    <li><b>Run the full shift protocol (2m):</b> use the Run Shift button on the character's card. Stay in the body while getting ready. Walk to the mirror in it.</li>
+    <li><b>Rehearsal (2m):</b> in the body, first person: door, greeting, first exchange. Then one awkward moment, and you staying loose inside it, Ferguson-style. The awkward rep matters more than the smooth one.</li>
+    <li><b>Baseline skim (1m):</b> listen actively · question · empathize · compliment · common ground · playfulness.</li>
+    <li><b>Sharpness token (30s):</b> the one physical trigger, always the same, meaning fully present.</li>
+  </ul>
+  <h2>Deployment rules</h2>
+  <ul>
+    <li>Go first, go positive. You set the temperature of every room you enter.</li>
+    <li>Warm goodbye, every time, even tired. The February regret is the permanent anchor for this rule.</li>
+    <li>One favor asked or given per new connection, when natural.</li>
+    <li>Mid-conversation slip: five-second reset, posture and line only, while they are talking. Nobody sees it.</li>
+    <li><b>Shifts are worn for people, never against them.</b> Charm in service of making people feel good is the whole license.</li>
+  </ul>
+  <h2>The third character: Alone</h2>
+  <p>The old note split the self into Social, Business, Alone, and never defined the one that decides whether the other two are real. The Alone body: the door closes and nothing drops. Same posture, same standards, no audience needed. <i>"Who I am when unseen is who I actually am."</i> If the Alone body holds, the other two stop being performances and become descriptions.</p>
+  <h2>Daily articulation rep</h2>
+  <p>One short video per day, camera on, 60 to 90 seconds on anything, inside the Brand body. Posted or deleted, irrelevant: the rep trains articulation, lens eye contact, and comfort being perceived. From your TikTok note, kept for the right reason: charisma practice, not follower chasing.</p>
+  <h2>Review</h2><p>After any significant interaction, 60 seconds: which shift was I in, did it hold, what would I redo. Patterns only. Same mistake three times becomes the fortnight's focus.</p>
+  <div class="spacer"></div>
+</section>
+
+<section class="page manual" id="page-m3">
+  <button class="btn ghost" data-go="manuals">‹ Manuals</button>
+  <div class="eyebrow">Manual ٣</div><h1>Health</h1>
+  <h2>The standard</h2><p>80kg lean at 178cm. From 75kg with some fat: a slow lean bulk, 6 to 12 months of consistency, not a montage.</p>
+  <h2>The shift</h2><p><b>David Laid, mid-set.</b> Run it at the gym door: footage, step in, take the body (chest up, walk slower, zero phone), line: <i>"Every rep is filmed, so every rep is perfect."</i> Re-shift between sets if the phone appears. The kitchen has no celebrity; the kitchen runs on four checkmarks.</p>
+  <h2>Nutrition</h2>
+  <ul>
+    <li><b>160g protein daily.</b> Two meals at 50g, two shakes at 30g. The only macro tracked strictly.</li>
+    <li><b>Calories:</b> ~200 to 300 over maintenance. Scale climbing faster than ~1kg a month = pull back; that speed is mostly fat.</li>
+    <li>No processed junk as default, minimal sugar, gut-friendly rotation. Fixed shopping day, repeatable meal templates, protein never missed by accident.</li>
+  </ul>
+  <h2>Training</h2>
+  <ul>
+    <li><b>4 to 5 days a week, calendar-fixed.</b> Example: Upper / Lower / Rest / Push / Pull+Legs / Rest / conditioning.</li>
+    <li>Progressive overload on compounds: squat or leg press, hinge, bench or dips, rows, overhead press, pull-ups.</li>
+    <li>Abs 3x weekly: hanging raises, cable crunches, planks. Abs appear at low body fat plus load.</li>
+    <li>Cardio 2 to 3x weekly, 20 to 30 minutes, easy enough not to eat recovery. Boxing counts.</li>
+  </ul>
+  <h2>Sleep</h2><p>Fixed wake anchored to Fajr, sleep set backwards, 7.5 to 8 hours. Phone out of reach, Quran on, dark and cool. The under-eye issue is a sleep and screen problem before it is a serum problem.</p>
+  <h2>Supplements</h2>
+  <ul>
+    <li><b>Take:</b> creatine monohydrate 5g daily · omega-3 (1 to 2g EPA/DHA) · vitamin D3 if low · magnesium glycinate evenings if sleep needs help · whey for the two shakes.</li>
+    <li><b>Optional:</b> caffeine pre-training, electrolytes.</li>
+    <li><b>Peptides: not without a physician and bloodwork.</b> Gray-market, mostly injectable, unregulated purity. Sleep, protein, creatine, and consistency deliver 95% of what the marketing promises.</li>
+    <li><b>NAD-adjacent:</b> thin evidence for young healthy men. Spend it on better food.</li>
+  </ul>
+  <h2>Review</h2><p>Weekly, three numbers in the Review tab: bodyweight average, sessions done, protein days. Monthly: progress photo, same lighting, same pose.</p>
+  <div class="spacer"></div>
+</section>
+
+<section class="page manual" id="page-m4">
+  <button class="btn ghost" data-go="manuals">‹ Manuals</button>
+  <div class="eyebrow">Manual ٤</div><h1>Looks</h1>
+  <h2>The shifts</h2>
+  <p><b>In the bathroom: the Routine</b> (American Psycho's discipline, the man discarded). Precise, unrushed, every step complete. <i>"There is an exact way this is done, and I do it exactly."</i> Exists to kill the skipped-step tired-tonight version.</p>
+  <p><b>Out of the bathroom: Jordan Barrett.</b> Effortless, unbothered, never checking himself. <i>"It is handled, so I never think about it again."</i> Exists to kill vanity-checking. The routine is obsessive so the day does not have to be.</p>
+  <h2>AM · ~10 min · fixed order</h2>
+  <ul>
+    <li>Face wash · vitamin C serum · moisturizer · <b>SPF, daily</b> (the single highest-return skin habit, beats every corrective).</li>
+    <li>Under-eye caffeine serum if using; sleep does more.</li>
+    <li>Hair styled properly. Teeth brushed; whitening strips on the product's cadence, not daily forever.</li>
+    <li>Deodorant, then fragrance on moisturized skin. Contacts and light corrective makeup when the day calls: enhancement, not mask.</li>
+  </ul>
+  <h2>PM · ~5 min</h2>
+  <ul><li>Cleanse · treatment (retinoid or scar active, introduced slowly) · moisturizer · lip balm.</li></ul>
+  <h2>Weekly slot · fixed day · 30 min</h2>
+  <p>Beard line-up and trim, nails, brows, hair maintenance, wardrobe check for the week: ironed, planned, occasion-matched.</p>
+  <h2>Occasion prep · dates, events, hosting</h2>
+  <p>Full shower and hygiene sequence · mouth complete (scrape, floss, paste, balm, gum on hand) · lotion then perfume · hair styled · contacts · outfit planned · jewelry · nails checked · light makeup if using. Hosting: space cleared, ambient light, scent, coffee and dates per your hospitality standard. Run it in the Routine body; close the mirror and shift to Barrett for the night.</p>
+  <h2>Standing rules</h2>
+  <ul>
+    <li>Barber every 2 to 3 weeks, booked in advance.</li>
+    <li>Fit beats brand, ironed beats new, one style identity beats ten trends. Dress the character, not the algorithm.</li>
+    <li>Grooming TikTok gets a bounded 20-minute slot, saved to a list, acted on at the weekly slot.</li>
+  </ul>
+  <div class="spacer"></div>
+</section>
+
+<section class="page manual" id="page-m5">
+  <button class="btn ghost" data-go="manuals">‹ Manuals</button>
+  <div class="eyebrow">Manual ٥</div><h1>Career</h1>
+  <h2>The shift</h2><p><b>Feynman.</b> Run it at the start of every deep block: the grin, the chalk, the delight. <i>"I want to actually understand this, not sound like I do."</i> Deploy also on hard papers (confusion is the fun part) and whenever explaining anything, because explaining like him is the profession you are heading toward. Wearing him now is rehearsal for the actual job.</p>
+  <h2>The daily deep block</h2>
+  <ul>
+    <li><b>90 to 120 minutes, every day, before shallow work.</b> Phone in another room. This block is the career.</li>
+    <li>Content rotates: course material, textbooks, implementation, papers, research writing.</li>
+    <li>The spine: quantum decoherence, information geometry, ML-for-quantum. Every block traces to it or a named prerequisite.</li>
+  </ul>
+  <h2>Weekly structure</h2>
+  <ul>
+    <li><b>One paper or serious source weekly,</b> summarized in one page, own words. You do not need more input, you need output.</li>
+    <li><b>One building session weekly minimum:</b> code, experiment, or write.</li>
+    <li><b>World literacy, 30 min twice a week:</b> markets, tech, Gulf and global politics. Enough to speak intelligently, not enough to become a news consumer.</li>
+  </ul>
+  <h2>Ventures</h2>
+  <ul>
+    <li><b>Venture shift: Hormozi.</b> Forward, blunt, calm. <i>"Find the real constraint, do the boring work, ignore everything else."</i> Feynman is for understanding; Hormozi is for shipping.</li>
+    <li>Fixed, bounded block on set days. Never the deep block's slot. Study is scheduled first; ventures fill remaining capacity, never the reverse.</li>
+    <li>One active venture gets real effort. Others park, reviewed monthly.</li>
+  </ul>
+  <h2>Review</h2><p>Weekly: deep blocks out of 7, summary done, building session done. Below 5 of 7 for two straight weeks = something structural is stealing them; find it at the rewrite.</p>
+  <div class="spacer"></div>
+</section>
+
+<section class="page manual" id="page-m6">
+  <button class="btn ghost" data-go="manuals">‹ Manuals</button>
+  <div class="eyebrow">Manual ٦</div><h1>Life</h1>
+  <h2>The shift</h2><p><b>You, from the camera roll.</b> Before booking anything and whenever motivation dips: Japan, Thailand, the bike, the range. Watch it as footage, step into the version of you living it. <i>"This is what the money and discipline are for."</i> Your own note said the camera roll should be enough motivation. Formalized here.</p>
+  <h2>The active roster · three at a time</h2>
+  <ul>
+    <li><b>Boxing:</b> sign up this month, 2x weekly. Counts toward cardio. The signup is a this-week action.</li>
+    <li><b>Motorcycle:</b> booked in advance, minimum 2x monthly, more when weather allows.</li>
+    <li><b>Chinese:</b> 15 minutes daily plus one 45-minute focused weekly session. The streak is the metric; fluency milestones quarterly.</li>
+    <li><b>Bench:</b> swimming (promote once boxing is stable, ~6 to 8 weeks), plus whatever earns a slot.</li>
+  </ul>
+  <h2>Anime and entertainment</h2>
+  <p>Scheduled, therefore guilt-free: the evening wind-down slot after the day's checkmarks. A reward with a container, not a leak. If it appears outside its container, something upstream (sleep, stress, avoidance) needs looking at.</p>
+  <h2>Travel and experiences</h2>
+  <ul>
+    <li><b>One per month minimum:</b> trip, new city, new activity, new venue. Booked in the monthly review, before the month starts.</li>
+    <li>Build each around people or a skill. Your own travel notes prove it: connection or challenge fed you; pure consumption left nothing.</li>
+  </ul>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ SHIFTS ============ -->
+<section class="page" id="page-shifts">
+  <div class="eyebrow">The locker</div>
+  <h1>Body Shifts</h1>
+  <p class="dimtx small" style="margin:8px 0 6px">A shift is physical or it is nothing: footage → step in → take the body → the line → act. A figure with no vivid footage is banned; rewatch or replace at the rewrite.</p>
+  <p class="small" style="margin:0 0 16px;color:var(--brass2)" id="focusLine"></p>
+  <div class="grid2" id="charGrid"></div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<section class="page" id="page-practice">
+  <div class="eyebrow">Part three</div>
+  <h1>Practice</h1>
+
+  <div class="card">
+    <h3>Morning · after reading The Note · 8 min</h3>
+    <p class="small dimtx">Settle → gratitude → the shift → the film → the contrast → seal. Uses today's obstacle and primary shift from the home page.</p>
+    <div class="btnrow"><button class="btn primary wide" id="startMorning2">Begin morning practice</button></div>
+    <div class="savenote" id="morningState"></div>
+  </div>
+
+  <div class="card">
+    <h3>Stillness · 5 min guided</h3>
+    <p class="small dimtx">A voiced sit: two physiological sighs to settle, breath training, body release, muraqabah, return. The voice uses your device's built-in speech; change the voice in your phone's system settings if you want a different one.</p>
+    <div class="btnrow">
+      <button class="btn primary" id="startMed" style="flex:1">Begin stillness</button>
+      <button class="chip" id="voiceToggle" aria-pressed="true">Voice on</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Evening check · 60 seconds</h3>
+    <p class="small dimtx" style="margin-bottom:10px">Score the day honestly. Three failures in a row on the same anchor means redesign the anchor, not push harder.</p>
+    <div class="field"><label>The day's marks</label>
+      <div class="chips" id="chipRow"></div></div>
+    <div class="field"><label for="held">Where I held the character</label><textarea id="held" placeholder="Third person: where did Mosaed hold it today?"></textarea></div>
+    <div class="field"><label for="broke">Where I broke, and which anchor failed</label><textarea id="broke" placeholder="Third person: where did he break, and which anchor failed?"></textarea></div>
+    <div class="field"><label for="lived">Shift I actually lived in most</label><select id="lived"></select></div>
+    <div class="btnrow"><button class="btn primary wide" id="saveEvening">Save tonight's check</button></div>
+    <div class="savenote" id="eveSaved"></div>
+  </div>
+
+  <div class="card">
+    <h3>Last 14 days</h3>
+    <p class="small dimtx">Green: five prayers on time. Ember: checked in, missed. Empty: no check.</p>
+    <div class="dots" id="dotRow"></div>
+    <p class="small" style="margin-top:10px" id="streakLine"></p>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ REVIEW ============ -->
+<section class="page" id="page-review">
+  <div class="eyebrow">Cadence</div>
+  <h1>Review</h1>
+
+  <div class="card">
+    <h3>Weekly numbers</h3>
+    <div class="grid2">
+      <div class="field"><label for="wWeight">Bodyweight avg · kg</label><input id="wWeight" type="number" inputmode="decimal" step="0.1" placeholder="75.0"></div>
+      <div class="field"><label for="wSessions">Sessions · of 5</label><input id="wSessions" type="number" inputmode="numeric" min="0" max="7" placeholder="4"></div>
+      <div class="field"><label for="wProtein">Protein days · of 7</label><input id="wProtein" type="number" inputmode="numeric" min="0" max="7" placeholder="6"></div>
+      <div class="field"><label for="wDeep">Deep blocks · of 7</label><input id="wDeep" type="number" inputmode="numeric" min="0" max="7" placeholder="5"></div>
+    </div>
+    <div class="btnrow"><button class="btn wide" id="saveWeek">Log this week</button></div>
+    <div class="savenote" id="weekSaved"></div>
+    <table class="wk" id="weekTable"></table>
+  </div>
+
+  <div class="card">
+    <h3>Biweekly rewrite <span class="small dimtx" id="rewriteDue"></span></h3>
+    <ul class="small" style="margin:8px 0 12px 18px;color:var(--dim)">
+      <li>Rewrite Part 1 by hand: dead phrases cut, drifted goals corrected.</li>
+      <li>Pick the fortnight's shift focus and rewatch one real clip of that figure this week. Faded footage is how shifts die.</li>
+      <li>Audit the roster: any figure whose footage has blurred gets rewatched or replaced.</li>
+      <li>Redesign any three-strike anchors.</li>
+      <li>Journals merge into The Note or die.</li>
+    </ul>
+    <div class="field"><label for="focusPick">Fortnight's shift focus</label><select id="focusPick"></select></div>
+    <div class="btnrow"><button class="btn primary wide" id="markRewrite">Mark rewrite done today</button></div>
+    <div class="savenote" id="rewriteSaved"></div>
+  </div>
+
+  <div class="card">
+    <h3>Monthly review <span class="small dimtx" id="monthlyDue"></span></h3>
+    <p class="small dimtx" style="margin-bottom:10px">Six areas, honest scores with 10 as a hard ceiling, one improvement each, next month's experience booked, progress photo taken. Then close it: the review serves the system; the system serves the life.</p>
+    <div id="monthlyFields"></div>
+    <div class="field"><div class="chips" style="gap:8px"><button class="chip" id="expBooked" aria-pressed="false">Next month's experience booked</button><button class="chip" id="photoTaken" aria-pressed="false">Progress photo taken</button></div></div>
+    <div class="btnrow"><button class="btn primary wide" id="markMonthly">Mark monthly review done</button></div>
+    <div class="savenote" id="monthlySaved"></div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+</main>
+
+<!-- character sheet -->
+<div class="sheet-scrim" id="scrim"></div>
+<div class="sheet" id="sheet"><div class="inner" id="sheetInner"></div></div>
+
+<!-- runner -->
+<div class="runner" id="runner">
+  <div class="pulse" id="pulse"></div>
+  <div class="r-eyebrow" id="rEyebrow"></div>
+  <div class="r-title" id="rTitle"></div>
+  <div class="r-body" id="rBody"></div>
+  <div class="r-time" id="rTime"></div>
+  <div class="r-bar"><i id="rBar"></i></div>
+  <div class="r-ctl">
+    <button class="btn" id="rBack">Back</button>
+    <button class="btn" id="rPause">Pause</button>
+    <button class="btn primary" id="rNext">Next</button>
+  </div>
+  <div class="r-step" id="rStep"></div>
+  <button class="btn ghost" id="rExit" style="position:absolute;top:16px;right:14px">Close</button>
+</div>
+
+<!-- meditation -->
+<div class="runner" id="med">
+  <div class="pulse"></div>
+  <div class="r-eyebrow">Stillness</div>
+  <div class="r-title" id="mPhase">Settle</div>
+  <div class="r-body" id="mCue" style="min-height:76px"></div>
+  <div class="r-time" id="mTime">5:00</div>
+  <div class="r-bar"><i id="mBar"></i></div>
+  <div class="r-ctl">
+    <button class="btn" id="mPause">Pause</button>
+    <button class="btn" id="mEnd">End</button>
+  </div>
+  <div class="r-step" id="mHint">Eyes closed. The voice will guide you.</div>
+</div>
+
+<nav class="navbar"><div class="in">
+  <button class="tab" data-go="home"><span class="g">۞</span>Note</button>
+  <button class="tab" data-go="manuals"><span class="g">٦</span>Manuals</button>
+  <button class="tab" data-go="shifts"><span class="g">◈</span>Shifts</button>
+  <button class="tab" data-go="practice"><span class="g">☾</span>Practice</button>
+  <button class="tab" data-go="review"><span class="g">✓</span>Review</button>
+</div></nav>
+
+<script>
+'use strict';
+/* ---------- characters ---------- */
+const CHARS=[
+ {id:'sulaiman',name:'Sulaiman عليه السلام',slot:'The Servant King',area:'Faith',
+  footage:'Built from the verses, not video: the wind at his command, the armies of jinn and men, the ant in the valley, the throne of Bilqis brought in a blink. Power beyond any king, and every scene ends in gratitude.',
+  body:'Upright spine, unhurried, nothing to prove. The stillness of a man certain of Who provides.',
+  line:'All of this is from my Lord, to test whether I am grateful.',
+  deploy:'Entering prayer · at a boundary temptation · when success inflates the ego.',
+  links:[{label:'Read Surah An-Naml (the source scenes)',url:'https://quran.com/27'},{label:'Read Surah Sad — Dawud and Sulaiman',url:'https://quran.com/38'}]},
+ {id:'ferguson',name:'Craig Ferguson',slot:'The Player',area:'Social',
+  footage:'Any monologue or interview where he throws the script away, leans back, and just plays. The eyebrows, the half-grin, the total absence of nerves.',
+  body:'Loose shoulders, slight lean back, unhurried speech with sudden bursts. Laughs at himself first. Holds eye contact through the joke.',
+  line:'None of this is serious, and that is why everyone relaxes around me.',
+  deploy:'Parties · group banter · rooms that need energy · recovering an awkward moment (awkwardness is material, not danger).',
+  links:[{label:'YouTube: Ferguson at his loosest',url:'https://www.youtube.com/results?search_query=craig+ferguson+funniest+moments'},{label:'YouTube: Ferguson charm compilations',url:'https://www.youtube.com/results?search_query=craig+ferguson+flirting+compilation'}]},
+ {id:'brand',name:'Russell Brand',slot:'The Flow',area:'Social',
+  footage:'An interview where he walks into a formal or hostile room and disarms it in a minute: names, touch on the shoulder, compliments too fast to doubt, words outrunning fear.',
+  body:'Animated hands, forward energy, big warm eye contact, fast articulate speech. Physically expressive, unafraid of anyone\u2019s status.',
+  line:'I love people and words come to me faster than fear does.',
+  deploy:'Cold approaches · meeting strangers · verbal courage · light non-threatening charm · dissolving articulation fog (pair with a vocal warm-up).',
+  links:[{label:'YouTube: Brand disarming interviews',url:'https://www.youtube.com/results?search_query=russell+brand+charisma+interview'},{label:'YouTube: Brand charisma breakdowns',url:'https://www.youtube.com/results?search_query=russell+brand+charisma+analysis'}]},
+ {id:'uncle',name:'Uncle Abo Abdullah',slot:'The Anchor',area:'Social · real footage',
+  footage:'Your own memory: how he sits, how he listens, how people lower their voice and tell him the truth. Worries left with Allah, big white heart, great manners. Pick the single strongest scene of him you hold and sit with it.',
+  body:'Still, grounded, slower speech, deep attention, no fidgeting. Warm, unhurried reactions. Returns to what was said ten minutes ago.',
+  line:'There is nowhere else I need to be than this conversation.',
+  deploy:'One-on-one depth · someone opening up or struggling · family · elders · when being remembered matters more than being entertaining.',
+  links:[]},
+ {id:'khalo',name:'Khalo Ibrahim',slot:'The Presence · real',area:'Status rooms',
+  footage:'Your own memory: how a room treats him and how little he does to be treated that way. Respected, connected, humble, generous.',
+  body:'Economy of movement, generous but brief words, greets the smallest person in the room with the same weight as the biggest.',
+  line:'My weight in a room comes from who I am, not what I perform.',
+  deploy:'High-status settings where the Wayne clip feels like fiction: this is the same body with real memory behind it.',
+  links:[]},
+ {id:'wayne',name:'Bruce Wayne',slot:'The Presence',area:'Status rooms',
+  footage:'The gala scenes: he enters wealth and status neither impressed nor performing, greets staff and moguls with the same ease, says less than everyone, misses nothing.',
+  body:'Tall spine, slow head movement, measured speech, comfortable silence. A handshake and a look that arrive before any words.',
+  deploy:'Professional events · negotiations · powerful people · any urge to prove yourself (the urge itself is the trigger to shift).',
+  line:'I belong in every room, so I compete in none.',
+  links:[{label:'YouTube: Wayne gala scenes',url:'https://www.youtube.com/results?search_query=bruce+wayne+gala+scene'}]},
+ {id:'hitman',name:'Gary Johnson · Hit Man',slot:'The Frame',area:'The blend, with women',
+  footage:'Glen Powell as Gary in his invented personas: groomed, amused, at ease, masculine without strain. A man enjoying the role too much to need the outcome.',
+  body:'Relaxed jaw, slow smile, settled shoulders, no leaning in. Amusement as the resting state.',
+  line:'I am delightful company and I need nothing from you.',
+  deploy:'Dates and the blend: Brand\u2019s warmth at Ferguson\u2019s playfulness under Wayne\u2019s restraint, carried in this frame. Subtraction is the rule.',
+  links:[{label:'YouTube: Hit Man (2024) scenes',url:'https://www.youtube.com/results?search_query=hit+man+2023+glen+powell+scenes'}]},
+ {id:'laid',name:'David Laid',slot:'The Machine',area:'Gym',
+  footage:'Mid-set: controlled eccentric, earphones in, zero wasted movement, nobody else exists.',
+  body:'Chest up, walk slower, phone away. Tempo on every rep.',
+  line:'Every rep is filmed, so every rep is perfect.',
+  deploy:'The gym door, before the first set. Re-shift between sets if the phone appears.',
+  links:[{label:'YouTube: Laid training footage',url:'https://www.youtube.com/results?search_query=david+laid+training'}]},
+ {id:'routine',name:'The Routine',slot:'Discipline only',area:'Mirror · AM & PM',
+  footage:'The American Psycho morning sequence: every step deliberate, unhurried, complete. Take the precision. Discard the man entirely.',
+  body:'Methodical hands, no rushing, no skipping, full sequence every time.',
+  line:'There is an exact way this is done, and I do it exactly.',
+  deploy:'AM and PM routines · occasion prep. Exists to kill the tired-tonight half-version.',
+  links:[{label:'YouTube: the routine scene',url:'https://www.youtube.com/results?search_query=american+psycho+morning+routine'}]},
+ {id:'barrett',name:'Jordan Barrett',slot:'The Unbothered',area:'Out of the mirror',
+  footage:'Candid clips, not shoots: effortless, unbothered, never checking himself.',
+  body:'Loose, unposed, zero mirror-seeking. It is handled.',
+  line:'It is handled, so I never think about it again.',
+  deploy:'The moment the routine ends. Kills vanity-checking and public fussing.',
+  links:[{label:'YouTube: Barrett candid',url:'https://www.youtube.com/results?search_query=jordan+barrett+interview'}]},
+ {id:'feynman',name:'Richard Feynman',slot:'The Professor',area:'Deep work',
+  footage:'Any lecture clip: the grin, the chalk, the delight, first principles as the most fun available to man.',
+  body:'Leaned into the desk, alert, enjoying it. Confusion greeted like a puzzle, not a threat.',
+  line:'I want to actually understand this, not sound like I do.',
+  deploy:'Start of every deep block · hard papers · explaining anything to anyone. This is rehearsal for the actual job.',
+  links:[{label:'YouTube: Fun to Imagine',url:'https://www.youtube.com/results?search_query=feynman+fun+to+imagine'},{label:'YouTube: Feynman lectures',url:'https://www.youtube.com/results?search_query=richard+feynman+lecture'}]},
+ {id:'hormozi',name:'Alex Hormozi',slot:'The Operator',area:'Venture block',
+  footage:'Whiteboarding or answering a question with zero fluff. Forward, blunt, calm.',
+  body:'Square to the work, short sentences, no performance.',
+  line:'Find the real constraint, do the boring work, ignore everything else.',
+  deploy:'Start of the venture block. Feynman understands; Hormozi ships. The block ends when the timer does.',
+  links:[{label:'YouTube: Hormozi on constraints',url:'https://www.youtube.com/results?search_query=alex+hormozi+advice'}]},
+ {id:'self',name:'You · the camera roll',slot:'The Proof',area:'Life',
+  footage:'Your own roll: Japan, Thailand, the bike, the range. Real footage of the life already being lived.',
+  body:'You know exactly how you stand in those photos. Stand like that now.',
+  line:'This is what the money and discipline are for.',
+  deploy:'Before booking anything · whenever motivation dips. Open the roll, watch, step in.',
+  links:[]},
+ {id:'alone',name:'The Alone Body',slot:'The Real One',area:'Unseen hours',
+  footage:'Composite: Sulaiman in private worship, Feynman alone with a problem for the joy of it, you at Fajr when no one on earth knows you are awake.',
+  body:'The door closes and nothing drops. Same posture, same standards, no audience needed.',
+  line:'Who I am when unseen is who I actually am.',
+  deploy:'Every moment nobody is watching, which is most of life. If this body holds, the others become descriptions, not performances.',
+  links:[]}
+];
+
+/* ---------- state ---------- */
+const KEY='note_system_v1';
+let S={days:{},weeks:[],monthly:{},meta:{lastRewrite:null,lastMonthly:null,focus:'ferguson'}};
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function day(k){k=k||todayKey();if(!S.days[k])S.days[k]={obstacle:'',response:'',shift:'',morningDone:false,evening:null};return S.days[k];}
+async function load(){try{const r=await window.storage.get(KEY);if(r&&r.value){const p=JSON.parse(r.value);S=Object.assign(S,p);S.meta=Object.assign({lastRewrite:null,lastMonthly:null,focus:'ferguson'},p.meta||{});}}catch(e){/* first run */}}
+let saveT=null;
+function save(){clearTimeout(saveT);saveT=setTimeout(async()=>{try{await window.storage.set(KEY,JSON.stringify(S));}catch(e){console.error('save failed',e);}},350);}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function flash(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg;setTimeout(()=>{if(el.textContent===msg)el.textContent='';},2600);}
+
+/* ---------- nav ---------- */
+function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));const pg=document.getElementById('page-'+p);if(pg)pg.classList.add('on');
+document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.go===p||(p.startsWith('m')&&p.length===2&&t.dataset.go==='manuals')));
+window.scrollTo({top:0});}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);}});
+
+/* ---------- home ---------- */
+function fmtDate(){const d=new Date();return d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});}
+function daysSince(iso){if(!iso)return null;const a=new Date(iso+'T00:00:00'),b=new Date(todayKey()+'T00:00:00');return Math.round((b-a)/86400000);}
+function renderBadges(){const b=document.getElementById('badges');const parts=[];
+ const rs=daysSince(S.meta.lastRewrite);
+ if(rs===null)parts.push('<span class="badge due">Rewrite: not yet done</span>');
+ else if(rs>=14)parts.push('<span class="badge due">Rewrite due · '+rs+' days since</span>');
+ else parts.push('<span class="badge">Rewrite in '+(14-rs)+' days</span>');
+ const now=new Date();const mKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+ if(!S.meta.lastMonthly||!S.meta.lastMonthly.startsWith(mKey))parts.push('<span class="badge due">Monthly review open</span>');
+ else parts.push('<span class="badge ok">Monthly done</span>');
+ const foc=CHARS.find(c=>c.id===S.meta.focus);
+ if(foc)parts.push('<span class="badge brass">Fortnight focus · '+esc(foc.name.split(' ')[0]==='Uncle'?'Abo Abdullah':foc.name.split('·')[0].trim())+'</span>');
+ b.innerHTML=parts.join('');}
+function shiftOptions(sel,val){sel.innerHTML='<option value="">— choose —</option>'+CHARS.map(c=>'<option value="'+c.id+'"'+(c.id===val?' selected':'')+'>'+esc(c.name)+' · '+esc(c.slot)+'</option>').join('');}
+function initHome(){const d=day();
+ const ob=document.getElementById('obstacle'),rp=document.getElementById('response'),ps=document.getElementById('primaryShift');
+ ob.value=d.obstacle;rp.value=d.response;shiftOptions(ps,d.shift);
+ ob.addEventListener('input',()=>{day().obstacle=ob.value;save();flash('homeSaved','Saved');});
+ rp.addEventListener('input',()=>{day().response=rp.value;save();flash('homeSaved','Saved');});
+ ps.addEventListener('change',()=>{day().shift=ps.value;save();flash('homeSaved','Saved');});
+ document.getElementById('topDate').textContent=fmtDate();
+ renderBadges();}
+
+/* ---------- shifts locker ---------- */
+function renderChars(){const g=document.getElementById('charGrid');
+ g.innerHTML=CHARS.map(c=>'<button class="charcard'+(c.id===S.meta.focus?' focus':'')+'" data-char="'+c.id+'"><div class="slot">'+esc(c.slot)+'</div><div class="nm">'+esc(c.name)+'</div><div class="ar">'+esc(c.area)+'</div>'+(c.id===S.meta.focus?'<div class="focus-tag">Fortnight focus</div>':'')+'</button>').join('');
+ const foc=CHARS.find(c=>c.id===S.meta.focus);
+ document.getElementById('focusLine').textContent=foc?('This fortnight, train one body until it arrives in five seconds: '+foc.name+'.'):'';}
+document.addEventListener('click',e=>{const cc=e.target.closest('[data-char]');if(cc)openSheet(cc.dataset.char);});
+function openSheet(id){const c=CHARS.find(x=>x.id===id);if(!c)return;
+ const inner=document.getElementById('sheetInner');
+ inner.innerHTML='<button class="close" id="sheetClose">×</button>'+
+ '<div class="eyebrow">'+esc(c.slot)+' · '+esc(c.area)+'</div><h2>'+esc(c.name)+'</h2>'+
+ '<div class="kv"><div class="k">The footage</div><div class="v">'+esc(c.footage)+'</div></div>'+
+ '<div class="kv"><div class="k">The body</div><div class="v">'+esc(c.body)+'</div></div>'+
+ '<div class="linequote">"'+esc(c.line)+'"</div>'+
+ '<div class="kv"><div class="k">Deploy</div><div class="v">'+esc(c.deploy)+'</div></div>'+
+ (c.links.length?'<div class="kv"><div class="k">Refresh the footage</div><div class="linkrow">'+c.links.map(l=>'<a href="'+l.url+'" target="_blank" rel="noopener">'+esc(l.label)+' ↗</a>').join('')+'</div></div>':'<div class="kv"><div class="k">Refresh the footage</div><div class="v dimtx">Memory footage. Sit with the strongest scene of them you hold; no screen needed.</div></div>')+
+ '<div class="btnrow"><button class="btn primary wide" id="runShiftBtn">Run this shift · 50 sec</button></div>';
+ document.getElementById('sheet').classList.add('on');document.getElementById('scrim').classList.add('on');
+ document.getElementById('sheetClose').onclick=closeSheet;
+ document.getElementById('runShiftBtn').onclick=()=>{closeSheet();startRunner(quickShiftSteps(c),'Body shift · '+c.name);};}
+function closeSheet(){document.getElementById('sheet').classList.remove('on');document.getElementById('scrim').classList.remove('on');}
+document.getElementById('scrim').addEventListener('click',closeSheet);
+
+/* ---------- runner engine ---------- */
+let R={steps:[],i:0,left:0,timer:null,paused:false,title:''};
+function startRunner(steps,title){R={steps,i:0,left:0,timer:null,paused:false,title};document.getElementById('runner').classList.add('on');showStep(0);}
+function beep(){try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=520;g.gain.setValueAtTime(0.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.06,ctx.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.5);o.start();o.stop(ctx.currentTime+0.55);}catch(e){}}
+function showStep(i){clearInterval(R.timer);R.i=i;const s=R.steps[i];if(!s){endRunner();return;}
+ document.getElementById('rEyebrow').textContent=R.title;
+ document.getElementById('rTitle').textContent=s.title;
+ document.getElementById('rBody').innerHTML=s.html;
+ document.getElementById('rStep').textContent='Step '+(i+1)+' of '+R.steps.length;
+ document.getElementById('rBack').style.visibility=i===0?'hidden':'visible';
+ document.getElementById('rNext').textContent=(i===R.steps.length-1)?'Finish':'Next';
+ if(s.secs){R.left=s.secs;R.paused=false;document.getElementById('rPause').style.display='';tick();R.timer=setInterval(()=>{if(!R.paused){R.left--;tick();if(R.left<=0){beep();showStep(R.i+1);}}},1000);}
+ else{document.getElementById('rTime').textContent='';document.getElementById('rBar').style.width='100%';document.getElementById('rPause').style.display='none';}}
+function tick(){const s=R.steps[R.i];const m=Math.floor(R.left/60),sec=String(R.left%60).padStart(2,'0');
+ document.getElementById('rTime').textContent=m+':'+sec;
+ document.getElementById('rBar').style.width=(100*(1-R.left/s.secs))+'%';}
+document.getElementById('rNext').onclick=()=>showStep(R.i+1);
+document.getElementById('rBack').onclick=()=>showStep(Math.max(0,R.i-1));
+document.getElementById('rPause').onclick=function(){R.paused=!R.paused;this.textContent=R.paused?'Resume':'Pause';};
+document.getElementById('rExit').onclick=endRunner;
+function endRunner(){clearInterval(R.timer);document.getElementById('runner').classList.remove('on');
+ if(R.title==='Morning practice'&&R.i>=R.steps.length){day().morningDone=true;save();refreshMorningState();}}
+function quickShiftSteps(c){return[
+ {title:'The footage',secs:12,html:esc(c.footage)},
+ {title:'Step in',secs:10,html:'Move from watching to being behind the eyes. The scene continues, first person now.'},
+ {title:'Take the body',secs:15,html:esc(c.body)+'<br><span class="dimtx small">Adjust your actual spine, breath, tempo, face. Physical or it is nothing.</span>'},
+ {title:'The line',secs:12,html:'<i>"'+esc(c.line)+'"</i><br><span class="dimtx small">Say it internally, in their tone.</span>'},
+ {title:'Act',secs:0,html:'Do the next thing while wearing the body. When it slips: posture and line, five seconds, no restart.'}];}
+function morningSteps(){const d=day();const c=CHARS.find(x=>x.id===d.shift);
+ const shiftHtml=c?('<b>'+esc(c.name)+'</b><br>'+esc(c.footage)+'<br><br><i>"'+esc(c.line)+'"</i><br><span class="dimtx small">Footage → step in → take the body in your seat → say the line. Sit inside it.</span>')
+  :'No primary shift chosen on the Note page. Pick the body the day most needs, and run it: footage, step in, take the body, the line.';
+ const obst=d.obstacle?('<b>'+esc(d.obstacle)+'</b> arrives. You, still in the body, do exactly this: <i>'+esc(d.response||'the response you pre-decided')+'</i>. Watch it happen.')
+  :'You left the obstacle line empty. Name it now in your mind, see it arrive, and see the exact response. Do not skip this to stay in the pleasant film.';
+ return[
+ {title:'Settle',secs:60,html:'Spine tall, eyes closed. In for 4, out for 6. Nothing else.<br><span class="dimtx small">The glow behind this text breathes at that pace. Match it.</span>'},
+ {title:'Gratitude',secs:60,html:'Three specific things from the last 24 hours. Felt, not listed. Alhamdulillah on each.<br><span class="dimtx small">The machine runs in the light; this sets the operating state.</span>'},
+ {title:'The shift',secs:120,html:shiftHtml},
+ {title:'The film',secs:180,html:'Still inside the body, run today first-person:<br>· the next prayer, on time, unhurried<br>· the first interaction, you going first, warm and easy<br>· the training session or deep block, arriving and starting without negotiation<br>· one moment specific to today, going the way this body would have it go.<br><span class="dimtx small">Eyes, sound, feeling. A rehearsal, not a screen.</span>'},
+ {title:'The contrast',secs:60,html:obst},
+ {title:'Seal',secs:60,html:'One dua in your own words for the day.<br><br><i>I am this man today, by the will of Allah.</i><br><span class="dimtx small">Open your eyes and start moving before the body cools.</span>'}];}
+document.getElementById('startMorning').onclick=()=>startRunner(morningSteps(),'Morning practice');
+document.getElementById('startMorning2').onclick=()=>startRunner(morningSteps(),'Morning practice');
+function refreshMorningState(){const el=document.getElementById('morningState');el.textContent=day().morningDone?'Done this morning.':'';}
+
+/* ---------- evening ---------- */
+const CHIPS=[['prayers','5 prayers on time'],['deep','Deep block'],['train','Trained'],['protein','Protein 4/4'],['hobby','Hobby session'],['routines','AM + PM routines']];
+function initEvening(){const row=document.getElementById('chipRow');
+ const d=day();const ev=d.evening||{chips:{},held:'',broke:'',lived:''};
+ row.innerHTML=CHIPS.map(([k,l])=>'<button class="chip" data-chip="'+k+'" aria-pressed="'+(ev.chips[k]?'true':'false')+'">'+l+'</button>').join('');
+ row.addEventListener('click',e=>{const c=e.target.closest('[data-chip]');if(!c)return;const on=c.getAttribute('aria-pressed')==='true';c.setAttribute('aria-pressed',on?'false':'true');});
+ document.getElementById('held').value=ev.held;document.getElementById('broke').value=ev.broke;
+ shiftOptions(document.getElementById('lived'),ev.lived);
+ document.getElementById('saveEvening').onclick=()=>{const chips={};row.querySelectorAll('[data-chip]').forEach(c=>{chips[c.dataset.chip]=c.getAttribute('aria-pressed')==='true';});
+  day().evening={chips,held:document.getElementById('held').value,broke:document.getElementById('broke').value,lived:document.getElementById('lived').value,done:true};
+  save();flash('eveSaved','Tonight\u2019s check saved.');renderDots();};
+ renderDots();refreshMorningState();}
+function renderDots(){const wrap=document.getElementById('dotRow');const cells=[];let streak=0,counting=true;
+ for(let i=13;i>=0;i--){const dte=new Date();dte.setDate(dte.getDate()-i);
+  const k=dte.getFullYear()+'-'+String(dte.getMonth()+1).padStart(2,'0')+'-'+String(dte.getDate()).padStart(2,'0');
+  const dd=S.days[k];let cls='dot';
+  if(dd&&dd.evening&&dd.evening.done){cls+=dd.evening.chips&&dd.evening.chips.prayers?' hit':' miss';}
+  cells.push('<span class="'+cls+'" title="'+k+'"></span>');}
+ wrap.innerHTML=cells.join('');
+ for(let i=0;i<60;i++){const dte=new Date();dte.setDate(dte.getDate()-i);
+  const k=dte.getFullYear()+'-'+String(dte.getMonth()+1).padStart(2,'0')+'-'+String(dte.getDate()).padStart(2,'0');
+  const dd=S.days[k];const hit=dd&&dd.evening&&dd.evening.done&&dd.evening.chips&&dd.evening.chips.prayers;
+  if(i===0&&!hit)continue; if(hit)streak++;else break;}
+ document.getElementById('streakLine').innerHTML=streak>0?('<span style="color:var(--green)">'+streak+' day'+(streak>1?'s':'')+'</span> of five-on-time. Protect it at Fajr.'):'<span class="dimtx">Nothing logged yet. Tonight starts the record.</span>';}
+
+/* ---------- review ---------- */
+function initReview(){
+ shiftOptions(document.getElementById('focusPick'),S.meta.focus);
+ document.getElementById('focusPick').addEventListener('change',e=>{S.meta.focus=e.target.value;save();renderChars();renderBadges();flash('rewriteSaved','Focus set.');});
+ document.getElementById('markRewrite').onclick=()=>{S.meta.lastRewrite=todayKey();save();renderReviewDue();renderBadges();flash('rewriteSaved','Rewrite marked done. Next due in 14 days.');};
+ document.getElementById('saveWeek').onclick=()=>{const e={date:todayKey(),weight:document.getElementById('wWeight').value,sessions:document.getElementById('wSessions').value,protein:document.getElementById('wProtein').value,deep:document.getElementById('wDeep').value};
+  S.weeks=S.weeks.filter(w=>w.date!==e.date);S.weeks.push(e);S.weeks=S.weeks.slice(-16);save();renderWeeks();flash('weekSaved','Week logged.');};
+ const areas=['Allah','People','Health','Looks','Career','Life'];
+ document.getElementById('monthlyFields').innerHTML=areas.map((a,i)=>'<div class="field"><label>'+'١٢٣٤٥٦'[i]+' · '+a+' — score /10 and one improvement</label><div class="grid2" style="grid-template-columns:86px 1fr"><input type="number" min="0" max="10" inputmode="numeric" id="ms'+i+'" placeholder="/10"><input id="mi'+i+'" placeholder="One improvement."></div></div>').join('');
+ ['expBooked','photoTaken'].forEach(id=>{const b=document.getElementById(id);b.onclick=()=>{b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');};});
+ document.getElementById('markMonthly').onclick=()=>{const now=new Date();const mKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const rec={month:mKey,areas:areas.map((a,i)=>({area:a,score:document.getElementById('ms'+i).value,improve:document.getElementById('mi'+i).value})),
+   expBooked:document.getElementById('expBooked').getAttribute('aria-pressed')==='true',photo:document.getElementById('photoTaken').getAttribute('aria-pressed')==='true',done:todayKey()};
+  S.monthly[mKey]=rec;S.meta.lastMonthly=todayKey();save();renderReviewDue();renderBadges();flash('monthlySaved','Monthly review closed. The system serves the life.');};
+ renderReviewDue();renderWeeks();
+ const now=new Date();const mKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+ const rec=S.monthly[mKey];
+ if(rec){rec.areas.forEach((r,i)=>{const s=document.getElementById('ms'+i),t=document.getElementById('mi'+i);if(s)s.value=r.score;if(t)t.value=r.improve;});
+  document.getElementById('expBooked').setAttribute('aria-pressed',rec.expBooked?'true':'false');
+  document.getElementById('photoTaken').setAttribute('aria-pressed',rec.photo?'true':'false');}}
+function renderReviewDue(){const rs=daysSince(S.meta.lastRewrite);
+ document.getElementById('rewriteDue').textContent=rs===null?'· never done':(rs>=14?'· due, '+rs+' days since':'· '+(14-rs)+' days left');
+ const now=new Date();const mKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+ document.getElementById('monthlyDue').textContent=(S.meta.lastMonthly&&S.meta.lastMonthly.startsWith(mKey))?'· done this month':'· open';}
+function renderWeeks(){const t=document.getElementById('weekTable');if(!S.weeks.length){t.innerHTML='';return;}
+ t.innerHTML='<tr><th>Week of</th><th>kg</th><th>Sessions</th><th>Protein</th><th>Deep</th></tr>'+S.weeks.slice().reverse().map(w=>'<tr><td>'+esc(w.date)+'</td><td>'+esc(w.weight||'—')+'</td><td>'+esc(w.sessions||'—')+'/5</td><td>'+esc(w.protein||'—')+'/7</td><td>'+esc(w.deep||'—')+'/7</td></tr>').join('');}
+
+/* ---------- meditation ---------- */
+const MED_LEN=300;
+const MED_CUES=[
+ {t:0,ph:'Settle',say:'Sit tall. Close your eyes. Let the hands rest.'},
+ {t:9,say:'Take a deep breath in through the nose. Then a second short sip of air on top.'},
+ {t:18,say:'Now a long, slow exhale through the mouth. Let everything drop.'},
+ {t:28,say:'Once more. Deep inhale. Short sip. And a long, slow exhale.'},
+ {t:42,ph:'Breath',say:'Now let the breath settle into its own rhythm. In for four. Out for six.'},
+ {t:62,say:'Rest your attention on the breath at the nostrils. Cool air in. Warm air out.'},
+ {t:82,say:'When the mind wanders, and it will, simply notice it. Name it: thinking. And return to the breath. No frustration. The return is the exercise.'},
+ {t:108,say:'Each return is one rep. This is how attention is trained.'},
+ {t:127,ph:'Body',say:'Now move attention to the body. Unclench the jaw. Let the tongue rest.'},
+ {t:142,say:'Drop the shoulders away from the ears.'},
+ {t:154,say:'Soften the hands completely.'},
+ {t:167,say:'Feel the whole body sitting here. Heavy. Still. Held.'},
+ {t:187,ph:'Awareness',say:'Now widen the awareness. You are not the thoughts passing through. You are the one watching them.'},
+ {t:207,say:'And remember: you are seen. Allah sees you sitting here. Ihsan is to live like you know it.'},
+ {t:232,say:'Rest in that. Nothing to perform. Nothing to chase. Just presence.'},
+ {t:256,ph:'Return',say:'Gently bring to mind the man from the Note. Let his posture arrive in your spine.'},
+ {t:272,say:'One quiet intention for the rest of this day. Choose it now.'},
+ {t:286,say:'When you are ready, take one deeper breath in.'},
+ {t:293,say:'And let it go. Open your eyes. Move with stillness.'}
+];
+let M={on:false,paused:false,el:0,timer:null};
+if(S.meta&&S.meta.voice===undefined){} /* default handled at load */
+function voiceOn(){return S.meta.voice!==false;}
+function speak(txt){if(!voiceOn())return;try{const u=new SpeechSynthesisUtterance(txt);u.rate=0.92;u.pitch=1;window.speechSynthesis.speak(u);}catch(e){}}
+function stopSpeech(){try{window.speechSynthesis.cancel();}catch(e){}}
+function medFmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function startMed(){M={on:true,paused:false,el:0,timer:null};
+ document.getElementById('med').classList.add('on');
+ document.getElementById('mPause').textContent='Pause';
+ beep();medTick();
+ M.timer=setInterval(()=>{if(M.paused)return;M.el++;medTick();if(M.el>=MED_LEN){beep();endMed();}},1000);}
+function medTick(){const left=MED_LEN-M.el;
+ document.getElementById('mTime').textContent=medFmt(Math.max(0,left));
+ document.getElementById('mBar').style.width=(100*M.el/MED_LEN)+'%';
+ const c=MED_CUES.find(x=>x.t===M.el);
+ if(c){if(c.ph)document.getElementById('mPhase').textContent=c.ph;
+  document.getElementById('mCue').textContent=c.say;speak(c.say);}}
+function endMed(){clearInterval(M.timer);M.on=false;stopSpeech();document.getElementById('med').classList.remove('on');}
+document.getElementById('startMed').onclick=()=>{document.getElementById('mPhase').textContent='Settle';document.getElementById('mCue').textContent='';startMed();};
+document.getElementById('mEnd').onclick=endMed;
+document.getElementById('mPause').onclick=function(){M.paused=!M.paused;this.textContent=M.paused?'Resume':'Pause';if(M.paused)stopSpeech();};
+const vt=document.getElementById('voiceToggle');
+function renderVoiceToggle(){vt.setAttribute('aria-pressed',voiceOn()?'true':'false');vt.textContent=voiceOn()?'Voice on':'Voice off';}
+vt.onclick=()=>{S.meta.voice=!voiceOn();save();renderVoiceToggle();};
+
+/* ---------- boot ---------- */
+(async function(){await load();initHome();renderChars();initEvening();initReview();renderVoiceToggle();go('home');})();
+</script>
+</body>
+</html>
